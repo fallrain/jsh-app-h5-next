@@ -11,4 +11,4 @@
 FROM registry.haier.net/library/nginx:1.13.8-alpine
 ENV AUTO_GENERATE=yes
 COPY app/nginx.conf /etc/nginx/conf.d
-COPY app/dist/ /usr/share/nginx/html/mobile/app
+COPY app/build/ /usr/share/nginx/html/mobile/app
