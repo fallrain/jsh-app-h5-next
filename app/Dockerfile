@@ -10,5 +10,5 @@
 #EXPOSE 443
 FROM registry.haier.net/library/nginx:1.13.8-alpine
 ENV AUTO_GENERATE=yes
-COPY nginx.conf /etc/nginx/conf.d
+COPY ./nginx.conf /etc/nginx/conf.d
 COPY dist/ /usr/share/nginx/html/mobile/app
