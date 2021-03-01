@@ -1,0 +1,32 @@
+.jInput-wrap{
+  display: flex;
+  align-items: center;
+  border-bottom: 1.5px solid #d3d3d3;
+  width: 100%;
+}
+
+.jInput {
+  flex-grow: 1;
+  height: 84px;
+  padding-left: 40px;
+  padding-right: 40px;
+  color: #666;
+  font-size: 28px;
+  border: none;
+
+  &::-webkit-input-placeholder {
+    color: #BDCADA;
+  }
+}
+
+.jInput-right{
+
+}
+
+.jInput-left{
+
+}
+
+.jInput-clear{
+
+}
