@@ -3,6 +3,14 @@ import ReactDOM from 'react-dom';
 import {
   BrowserRouter,
 } from 'react-router-dom';
+import {
+  createMuiTheme,
+  ThemeProvider
+} from '@material-ui/core/styles';
+import {
+  zhCN
+} from '@material-ui/core/locale';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 // css 区域
@@ -11,14 +19,22 @@ import './assets/css/base.scss';
 import './assets/css/common.scss';
 import './index.scss';
 
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#1976d2' },
+  },
+}, zhCN);
+
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter
-      basename={process.env.PUBLIC_URL}
-    >
+  // <React.StrictMode>
+  <BrowserRouter
+    basename={process.env.PUBLIC_URL}
+  >
+    <ThemeProvider theme={theme}>
       <App />
-    </BrowserRouter>
-  </React.StrictMode>,
+    </ThemeProvider>
+  </BrowserRouter>,
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 

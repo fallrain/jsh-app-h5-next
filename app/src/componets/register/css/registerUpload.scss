@@ -1,0 +1,44 @@
+.registerUpload {
+  .jFiledItem-title {
+    font-size: 26px;
+  }
+
+  .jInput {
+    text-align: right;
+    font-size: 26px;
+  }
+
+  .jSelect-wrap {
+    margin-left: auto;
+  }
+
+  .jUpload {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .MuiInput-underline {
+    &:before {
+      display: none;
+    }
+  }
+
+  .MuiInputBase-input {
+    text-align: right;
+    color: #666;
+    font-size: 26px;
+  }
+}
+
+.registerUpload-ta {
+  width: 100%;
+  height: 200px;
+  padding: 10px;
+  border: 1px solid #dfdfdf;
+}
+
+.registerUpload-filedItem {
+  .MuiInput-input {
+    padding-right: 40px;
+  }
+}

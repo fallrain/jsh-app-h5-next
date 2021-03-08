@@ -1,8 +1,12 @@
-.jInput-wrap{
+.jInput-wrap {
   display: flex;
   align-items: center;
   border-bottom: 1.5px solid #d3d3d3;
   width: 100%;
+
+  &.no-border {
+    border-bottom: 0;
+  }
 }
 
 .jInput {
@@ -15,18 +19,32 @@
   border: none;
 
   &::-webkit-input-placeholder {
-    color: #BDCADA;
+    color: #666;
+    opacity: 0.42;
   }
 }
 
-.jInput-right{
+.jInput-right {
 
 }
 
-.jInput-left{
+.jInput-left {
 
 }
 
-.jInput-clear{
+.jInput-clear {
+  font-size: 26px;
+  // visibility: hidden;
+  display: none;
+  margin-left: 8px;
+  margin-right: 8px;
 
+  &.show {
+    // visibility: visible;
+    display: block;
+  }
+}
+
+.jInput-eye {
+  font-size: 26px;
 }

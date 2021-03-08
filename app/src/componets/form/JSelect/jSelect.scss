@@ -1,0 +1,23 @@
+.jSelect-wrap {
+  display: flex;
+  align-items: center;
+  width: 160px;
+}
+
+.jSelect {
+  width: 100%;
+  border: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  background: transparent;
+  appearance: none;
+  font-size: 26px;
+  text-align: center;
+  text-align-last: center;
+  text-overflow: ellipsis;
+}
+
+.jSelect-icon {
+  font-size: 30px;
+  margin-left: auto;
+}

@@ -1,0 +1,31 @@
+.registerStep-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  color: #409eff;
+}
+
+.registerStep{
+  position: absolute;
+  background: #fff;
+  z-index: 1;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.registerStep-icon{
+  font-size: 48px;
+  margin-right: 20px;
+}
+
+.registerStep-wrap-line{
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  height: 1px;
+  background: #888;
+}

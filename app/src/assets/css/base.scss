@@ -93,6 +93,10 @@ button:focus, input:focus, textarea:focus {
   outline: 0;
 }
 
+textarea {
+  appearance: none;
+}
+
 :focus {
   outline: 0;
 }

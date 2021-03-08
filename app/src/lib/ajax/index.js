@@ -1,5 +1,8 @@
 import axios from 'axios';
 import qs from 'qs';
+import {
+  toast
+} from 'react-toastify';
 
 const ax = axios.create();
 
@@ -16,22 +19,17 @@ const loadingAy = [];
 function closeLoading() {
 // 关闭遮罩
   if (loadingAy.length === 1) {
-    document.querySelector('.js-b-loading').style = 'display:none;';
+    // document.querySelector('.js-b-loading').style = 'display:none;';
   }
   loadingAy.length--;
 }
 function showLoading() {
   /* 打开遮罩 */
-  document.querySelector('.js-b-loading').style = 'display:block;';
+  // document.querySelector('.js-b-loading').style = 'display:block;';
   return new Date().getTime();
 }
-let isShowError = false;
 
 function showError(msg) {
-  if (isShowError) {
-    return;
-  }
-  isShowError = true;
   let errorMsg;
   // 无错误返回请求失败
   // 对象类型解析错误
@@ -48,12 +46,14 @@ function showError(msg) {
       }
     }
   }
-  alert({
-    content: errorMsg || '请求失败',
-    confirmText: '确定',
-    onConfirm() {
-      isShowError = false;
-    }
+  toast.warning(errorMsg || '请求失败', {
+    position: 'top-center',
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
   });
 }
 
@@ -69,6 +69,7 @@ ax.interceptors.request.use((config) => {
   }
   return config;
 }, (error) => {
+  debugger;
   if (!error.config.params.noLoading) {
     closeLoading();
   }
@@ -86,7 +87,7 @@ ax.interceptors.response.use((response) => {
   }
   const { code, msg } = response.data;
   if (!(response.config.params && response.config.params.requestNoToast)) {
-    if (code !== 1) {
+    if (code !== '1') {
       showError(msg);
     }
   }
@@ -95,6 +96,7 @@ ax.interceptors.response.use((response) => {
   }
   return response.data;
 }, (error) => {
+  debugger;
   if (!error.config.params.noLoading) {
     closeLoading();
   }

@@ -3,6 +3,12 @@ import React, {
   useState
 } from 'react';
 import PropTypes from 'prop-types';
+import {
+  toast
+} from 'react-toastify';
+import {
+  rules
+} from 'src/lib/jValidate/JValidateRules.js';
 import './jSendCodeBtn.scss';
 
 function JSendCodeBtn(props) {
@@ -15,6 +21,7 @@ function JSendCodeBtn(props) {
   async function sendCode() {
     /* 发送验证码 */
     const {
+      send,
       beforeSend,
       callBack,
       afterSend,
@@ -25,20 +32,31 @@ function JSendCodeBtn(props) {
       return;
     }
     const phone = props.phone.trim();
-    if (!phone || !phone.startsWith('1') || phone.length !== 11) {
-      alert('请输入正确手机号');
+    if (!rules.mobile(phone)) {
+      toast.error('请输入正确手机号', {
+        position: 'top-center',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return;
     }
-    // this.basicService.sendSms({ mobile: phone }).then((res) => {
-    //   if (res.code === 1) {
-    //     alert('验证码发送成功');
-    //     if (callBack) {
-    //       callBack();
-    //     }
-    //   } else if (errorCallBack) {
-    //     errorCallBack();
-    //   }
-    // });
+    // 调用发送验证码函数，send需要返回promise
+    if (send) {
+      send().then(({ code }) => {
+        if (code === '1') {
+          toast('验证码发送成功');
+          if (callBack) {
+            callBack();
+          }
+        } else if (errorCallBack) {
+          errorCallBack();
+        }
+      });
+    }
 
     if (afterSend) {
       afterSend();
@@ -85,6 +103,8 @@ JSendCodeBtn.propTypes = {
     PropTypes.func,
     PropTypes.any,
   ]),
+  // 发送验证码函数
+  send: PropTypes.func,
   // 接口调用后
   callBack: PropTypes.func,
   // 接口报错

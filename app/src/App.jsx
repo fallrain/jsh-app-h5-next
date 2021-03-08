@@ -1,17 +1,17 @@
 import './App.scss';
 import React from 'react';
 import {
-  Route,
-} from 'react-router';
-import Register from './pages/register/register';
+  ToastContainer
+} from 'react-toastify';
+import RouterPage from './router';
+// toast css
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <div className="App">
-      <Route
-        path="/register"
-        component={Register}
-      />
+      <RouterPage />
+      <ToastContainer />
     </div>
   );
 }

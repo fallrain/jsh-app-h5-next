@@ -76,5 +76,14 @@ module.exports = {
     'react/require-default-props': 0,
     // 没必要
     'jsx-a11y/control-has-associated-label': 0,
+    'jsx-a11y/no-static-element-interactions': 0,
+    'jsx-a11y/click-events-have-key-events': 0,
+    // class内方法不一定必须有this
+    'class-methods-use-this': 0,
+    'import/prefer-default-export': 0,
+    'arrow-body-style': 0,
+    // label不是一定需要
+    'jsx-a11y/label-has-associated-control': 0,
+    'react/jsx-props-no-spreading': 0,
   }
 };

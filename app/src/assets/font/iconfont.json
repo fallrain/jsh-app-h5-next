@@ -6,6 +6,55 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "49674",
+      "name": "照相机",
+      "font_class": "13",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "2507442",
+      "name": "右",
+      "font_class": "you",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    },
+    {
+      "icon_id": "8441705",
+      "name": "成功",
+      "font_class": "chenggong",
+      "unicode": "e686",
+      "unicode_decimal": 59014
+    },
+    {
+      "icon_id": "728996",
+      "name": "眼睛",
+      "font_class": "yanjing",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "5152778",
+      "name": "电话",
+      "font_class": "dianhua",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "9626873",
+      "name": "合作",
+      "font_class": "hezuo",
+      "unicode": "e86f",
+      "unicode_decimal": 59503
+    },
+    {
+      "icon_id": "17976584",
+      "name": "icon-填写跟进",
+      "font_class": "icon-tianxiegenjin",
+      "unicode": "e66f",
+      "unicode_decimal": 58991
+    },
+    {
       "icon_id": "14478390",
       "name": "关  闭",
       "font_class": "guanbi",
