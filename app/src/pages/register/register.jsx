@@ -34,7 +34,7 @@ function Register() {
   // 密码验证对象
   const [passwordVdt, setPasswordVdt] = useState(null);
   // 步骤
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(1);
 
   const genVdt = useCallback(() => {
     /**

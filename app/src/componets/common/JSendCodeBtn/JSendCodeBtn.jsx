@@ -32,6 +32,18 @@ function JSendCodeBtn(props) {
       return;
     }
     const phone = props.phone.trim();
+    if (!phone) {
+      toast.error('请输入手机号', {
+        position: 'top-center',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
     if (!rules.mobile(phone)) {
       toast.error('请输入正确手机号', {
         position: 'top-center',

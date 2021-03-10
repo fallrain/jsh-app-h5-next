@@ -10,15 +10,15 @@ function RegisterStep(props) {
     },
     2: {
       icon: 'icon-icon-tianxiegenjin',
-      text: '验证手机号',
+      text: '填写注册信息',
     },
     3: {
       icon: 'icon-hezuo',
-      text: '验证手机号',
+      text: '合作意见填写',
     },
     4: {
       icon: 'icon-chenggong',
-      text: '验证手机号',
+      text: '注册成功',
     },
   };
   return (

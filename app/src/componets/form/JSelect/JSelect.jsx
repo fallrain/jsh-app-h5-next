@@ -1,11 +1,15 @@
 import React, {
-  useCallback
+  useCallback,
+  useEffect,
+  useRef
 } from 'react';
 import PropTypes from 'prop-types';
 import './jSelect.scss';
 import classNames from 'classnames';
 
 function JSelect(props) {
+  // select 引用
+  const selectRef = useRef(null);
   /**
    * 下拉框组件
    * */
@@ -16,6 +20,9 @@ function JSelect(props) {
     const target = e.target;
     // selectedIndex-1 是因为有【请选择】option
     const option = props.options[target.selectedIndex - 1];
+    if (!option) {
+      return;
+    }
     props.onChange && props.onChange({
       // select的name
       name: props.name,
@@ -31,8 +38,10 @@ function JSelect(props) {
   return (
     <div className="jSelect-wrap">
       <select
-        className="jSelect"
+        name={props.name}
+        ref={selectRef}
         value={props.value}
+        className="jSelect"
         onChange={handleChange}
       >
         {
@@ -52,6 +61,7 @@ function JSelect(props) {
             </option>
           ))
         }
+        <optgroup disabled />
       </select>
       <i
         className="iconfont icon-you jSelect-icon"

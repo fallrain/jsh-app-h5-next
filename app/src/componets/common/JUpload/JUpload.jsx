@@ -10,9 +10,7 @@ import {
   registerPlugin
 } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
-import {
-  SemipolarLoading
-} from 'react-loadingg';
+import SemipolarLoading from 'react-loadingg/lib/SemipolarLoading';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
