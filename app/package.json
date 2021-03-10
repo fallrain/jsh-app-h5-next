@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node scripts/start.js",
-    "sit": "env-cmd .env.sit node scripts/build.js",
+    "sit": "env-cmd -f ./.env.sit node scripts/build.js",
     "prod": "node scripts/build.js",
     "test": "node scripts/test.js"
   },
