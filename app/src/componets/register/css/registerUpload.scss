@@ -27,6 +27,11 @@
     text-align: right;
     color: #666;
     font-size: 26px;
+
+    &.Mui-disabled {
+      opacity: 1;
+      color: #aaa;
+    }
   }
 }
 

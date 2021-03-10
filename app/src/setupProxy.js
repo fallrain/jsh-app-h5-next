@@ -4,7 +4,7 @@ module.exports = function (app) {
   app.use(
     '/new/api/',
     createProxyMiddleware({
-      target: 'https://new.jsh.com',
+      target: 'https://mall.jsh.com',
       secure: false,
       changeOrigin: true,
     })

@@ -1,5 +1,6 @@
 import {
-  axGet
+  axGet,
+  axPostJson
 } from '../../lib/ajax';
 import urls from './cocUrl';
 
@@ -120,7 +121,7 @@ export default {
       // 联系人姓名
       userName,
     } = data;
-    return axGet(urls.saveCustomerPotential, {
+    return axPostJson(urls.saveCustomerPotential, {
       addressArea,
       addressAreaName,
       addressCity,
@@ -146,6 +147,10 @@ export default {
       taxCode,
       taxCodeDesc,
       userName,
+    },
+    null,
+    {
+      method: 'PUT'
     });
   },
 };

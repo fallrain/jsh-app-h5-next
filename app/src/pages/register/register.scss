@@ -4,18 +4,25 @@
   padding-top: 182px;
 }
 
-.register-head{
+.register-head {
   text-align: center;
 }
 
-.register-head-img{
+.register-head-img {
   width: 638px;
 }
 
-.register-body{
+.register-body {
   padding: 40px;
 }
 
-.register-field-item{
+.register-field-item {
   margin-bottom: 40px;
+}
+
+.register-btn-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 30px;
 }

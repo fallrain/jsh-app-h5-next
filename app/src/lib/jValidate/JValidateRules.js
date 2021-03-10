@@ -1,4 +1,10 @@
 const rules = {
+  custom(val, fun) {
+    /**
+     * 自定义验证
+     * */
+    return fun(val);
+  },
   required(val) {
     return val != null && /\S+/.test(val);
   },

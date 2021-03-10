@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "2180841",
+      "name": "提交,成功,对号",
+      "font_class": "tijiao",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
       "icon_id": "49674",
       "name": "照相机",
       "font_class": "13",

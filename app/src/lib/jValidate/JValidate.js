@@ -34,7 +34,7 @@ export default class {
 
   valid({
     includeKeys
-  }) {
+  } = {}) {
     /**
      * 验证整个表单
      * @includeKeys 只验证包含的字段
@@ -48,7 +48,10 @@ export default class {
             continue;
           }
           if (!rules[i](this.option.formData[p], regs[i])) {
-            this.showError((this.option.messages[p] && this.option.messages[p][i]) || messages[i]);
+            // 自定义验证不提示
+            if (i !== 'custom') {
+              this.showError((this.option.messages[p] && this.option.messages[p][i]) || messages[i]);
+            }
             return false;
           }
         }
@@ -61,7 +64,10 @@ export default class {
     const regs = this.option.rules[name];
     for (const i in regs) {
       if (!rules[i](this.option.formData[name], regs[i])) {
-        this.showError((this.option.messages[name] && this.option.messages[name][i]) || messages[i]);
+        // 自定义验证不提示
+        if (i !== 'custom') {
+          this.showError((this.option.messages[name] && this.option.messages[name][i]) || messages[i]);
+        }
         return false;
       }
     }

@@ -19,7 +19,9 @@ function JButton(props) {
     <button
       type="button"
       className={classNames([
-        'jButton'
+        'jButton',
+        props.type,
+        props.className
       ])}
       onClick={handleClick}
     >{props.text}
@@ -29,10 +31,16 @@ function JButton(props) {
 
 JButton.propTypes = {
   // 按钮文字
-  text: PropTypes.string
+  text: PropTypes.string,
+  // 按钮类型
+  type: PropTypes.string,
+  // 按钮样式类
+  className: PropTypes.string,
 };
 JButton.defaultProps = {
   // 按钮文字
-  text: ''
+  text: '',
+  type: 'default',
+  className: '',
 };
 export default JButton;

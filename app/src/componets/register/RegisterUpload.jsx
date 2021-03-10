@@ -21,41 +21,51 @@ import {
   MuiPickersUtilsProvider,
   DatePicker,
 } from '@material-ui/pickers';
-import TextField from '@material-ui/core/TextField';
+import {
+  Checkbox
+} from '@material-ui/core';
+import {
+  warningToast
+} from 'src/lib/util/index.jsx';
 import JValidate from '../../lib/jValidate/JValidate';
+import JButton from '../common/button/JButton';
+// 营业执照验证对象
+let vdt = null;
+// 联系人验证对象
+let userVdt = null;
 
-function RegisterUpload() {
+function RegisterUpload(props) {
   // 合作意向表单
   const [formData, setFormData] = useState({
-    // 上传的图片地址
-    businessLicenseUrl: '',
-    // 经营范围
-    businessScope: '',
-    // 营业执照地址
-    companyAddress: '',
     // 公司名称
     companyName: '',
+    // 统一社会信用代码
+    taxCode: '',
+    // 组织机构代码
+    taxCodeDesc: '',
     // 公司类型
     companyType: '',
-    // 法定代表人
-    legalPerson: '',
+    // 注册资本
+    registeredCapital: '',
+    // 注册日期
+    createdDate: null,
     // 经营开始日期
     operateStartDate: null,
     // 经营结束日期
     operateEndDate: null,
     // 是否长期经营
-    operatePeriodForeverFlag: '',
-    // 密码
-    password: '',
-    // 注册电话号码
-    phone: '',
-    // 注册资本
-    registeredCapital: '',
-    // 统一社会信用代码
-    taxCode: '',
-    // 组织机构代码
-    taxCodeDesc: '',
+    operatePeriodForeverFlag: false,
+    // 法定代表人
+    legalPerson: '',
+    // 营业执照地址
+    companyAddress: '',
+    // 经营范围
+    businessScope: '',
+    // 上传的图片地址
+    businessLicenseUrl: '',
   });
+  // 结束时间是否禁用
+  const [datePickerOperateEndDateDisabled, setDatePickerOperateEndDateDisabled] = useState(false);
   // 联系人表单
   const [userFormData, setUserFormData] = useState({
     // 联系人姓名
@@ -81,8 +91,6 @@ function RegisterUpload() {
     // 期望和问题
     question: '',
   });
-  // 验证对象
-  const [vdt, setVdt] = useState(null);
   // 省数据
   const [provinceOptions, setProvinceOptions] = useState([]);
   // 市数据
@@ -117,46 +125,137 @@ function RegisterUpload() {
     /**
      * 创建验证对象
      * */
-    const curVdt = new JValidate({
-      userFormData,
+    vdt = new JValidate({
+      formData,
       rules: {
-        // 电话
-        telphone: {
-          required: true,
-          mobile: true
+        companyName: {
+          maxLength: 50
         },
-        // 验证码
-        verifyCode: {
+        taxCode: {
+          maxLength: 50
+        },
+        taxCodeDesc: {
+          maxLength: 50
+        },
+        companyType: {
+          maxLength: 50
+        },
+        registeredCapital: {
+          maxLength: 20
+        },
+        legalPerson: {
+          maxLength: 20
+        },
+        companyAddress: {
+          maxLength: 1000
+        },
+        businessScope: {
+          maxLength: 1000
+        },
+      },
+      messages: {
+        companyName: {
+          maxLength: '公司名称长度不能超过50',
+        },
+        taxCode: {
+          maxLength: '统一社会信用代码长度不能超过50',
+        },
+        taxCodeDesc: {
+          maxLength: '组织机构代码长度不能超过50',
+        },
+        companyType: {
+          maxLength: '公司类型长度不能超过50',
+        },
+        registeredCapital: {
+          maxLength: '注册资本长度不能超过20',
+        },
+        legalPerson: {
+          maxLength: '法定代表人长度不能超过20',
+        },
+        companyAddress: {
+          maxLength: '营业执照地址长度不能超过1000',
+        },
+        businessScope: {
+          maxLength: '经营范围长度不能超过1000',
+        },
+      },
+    });
+  }, [formData]);
+
+  const genUserVdt = useCallback(() => {
+    /**
+     * 创建验证对象
+     * */
+    userVdt = new JValidate({
+      formData: userFormData,
+      rules: {
+        // 联系人
+        userName: {
+          required: true,
+          maxLength: 20
+        },
+        // 省
+        addressProvince: {
           required: true,
         },
-        password: {
+        // 市
+        addressCity: {
           required: true,
+        },
+        // 区
+        addressArea: {
+          required: true,
+        },
+        // 街道
+        addressTown: {
+          required: true,
+        },
+        // 详细地址
+        specificAddress: {
+          required: true,
+          maxLength: 100,
+        },
+        // 问题和期望
+        question: {
+          maxLength: 60,
         }
       },
       messages: {
-        // 姓名
-        telphone: {
-          required: '请输入手机号',
-          mobile: '请输入正确的手机号'
+        // 联系人
+        userName: {
+          required: '联系人姓名不能为空',
+          maxLength: '最大长度为20'
         },
-        // 验证码
-        verifyCode: {
-          required: '请输入验证码',
+        // 省
+        addressProvince: {
+          required: '店铺地址的省不能为空',
         },
-        // 密码为8-20个字符，由大写字母、小写字母、数字和符合的两种以上组合
-      }
+        // 市
+        addressCity: {
+          required: '店铺地址市不能为空',
+        },
+        // 区
+        addressArea: {
+          required: '店铺地址的区不能为空',
+        },
+        // 街道
+        addressTown: {
+          required: '店铺地址的街道不能为空',
+        },
+        // 详细地址
+        specificAddress: {
+          required: '店铺详细地址不能为空',
+          maxLength: '最大长度为100'
+        },
+        // 问题和期望
+        question: {
+          maxLength: '最大长度为60'
+        }
+      },
     });
-    setVdt(curVdt);
   }, [userFormData]);
 
-  useEffect(() => {
-    /**
-     * 组合验证对象effect
-     * */
-    genVdt();
-  }, [genVdt]);
-
-  const valChange = useCallback(({ name, value, target }) => {
+  const formValChange = useCallback(({ name, value, target }) => {
     /**
      *  值改变方法，组件受控方法
      * */
@@ -175,13 +274,44 @@ function RegisterUpload() {
     });
   }, [formData]);
 
+  const userFormValChange = useCallback(({ name, value, target }) => {
+    /**
+     *  值改变方法，组件受控方法
+     * */
+    let $name;
+    let $value;
+    if (name) {
+      $name = name;
+      $value = value;
+    } else {
+      $name = target.name;
+      $value = target.value;
+    }
+    setUserFormData({
+      ...userFormData,
+      [$name]: $value
+    });
+  }, [userFormData]);
+
+  const foreverFlagChange = useCallback((e, value) => {
+    /**
+     *  是否长期change
+     * */
+    setFormData({
+      ...formData,
+      operatePeriodForeverFlag: value
+    });
+    // 设置是否禁用结束时间
+    setDatePickerOperateEndDateDisabled(value);
+  }, [formData]);
+
   const provinceChange = useCallback(async ({ name, value, text }) => {
     /**
      * 省 select change
      * */
     // 设置省数据
-    setFormData({
-      ...formData,
+    setUserFormData({
+      ...userFormData,
       [name]: value,
       addressProvinceName: text,
       // 重置选中的城市
@@ -213,15 +343,15 @@ function RegisterUpload() {
         value: v.lacity,
       })));
     }
-  }, [formData]);
+  }, [userFormData]);
 
   const cityChange = useCallback(async ({ name, value, text }) => {
     /**
      * 市 select change
      * */
     // 设置市数据
-    setFormData({
-      ...formData,
+    setUserFormData({
+      ...userFormData,
       [name]: value,
       addressCityName: text,
       // 重置选中的区code
@@ -247,15 +377,15 @@ function RegisterUpload() {
         value: v.lacounty,
       })));
     }
-  }, [formData]);
+  }, [userFormData]);
 
   const countryChange = useCallback(async ({ name, value, text }) => {
     /**
      * 区 select change
      * */
     // 设置区数据
-    setFormData({
-      ...formData,
+    setUserFormData({
+      ...userFormData,
       [name]: value,
       addressAreaName: text,
       // 重置选中的街道乡镇编码
@@ -275,19 +405,19 @@ function RegisterUpload() {
         value: v.latown,
       })));
     }
-  }, [formData]);
+  }, [userFormData]);
 
   const streetChange = useCallback(async ({ name, value, text }) => {
     /**
      * 街道 select change
      * */
     // 设置街道数据
-    setFormData({
-      ...formData,
+    setUserFormData({
+      ...userFormData,
       [name]: value,
       addressTownName: text
     });
-  }, [formData]);
+  }, [userFormData]);
 
   const customValid = useCallback((error) => {
     /**
@@ -319,77 +449,128 @@ function RegisterUpload() {
       const res = JSON.parse(str);
       const {
         code,
-        data
+        data,
+        msg
       } = res;
       if (code === '1') {
+        // 开始时间
         if (isNaN(Date.parse(data.operateStartDate))) {
           data.operateStartDate = null;
+        } else {
+          // 成立日期
+          data.createdDate = data.operateStartDate;
         }
+        // 结束时间
         if (isNaN(Date.parse(data.operateEndDate))) {
           data.operateEndDate = null;
         }
+        const {
+          operatePeriodForeverFlag
+        } = data;
+        // 长期标志为boolean
+        data.operatePeriodForeverFlag = operatePeriodForeverFlag === '1';
+        // 设置是否禁用结束日期
+        setDatePickerOperateEndDateDisabled(data.operatePeriodForeverFlag);
         setFormData({
           ...formData,
           ...data
         });
+      } else {
+        warningToast(msg);
       }
     }
   }, [formData]);
 
   const toRegister = useCallback(() => {
-    cosService.saveCustomerPotential({
-      // 区code
-      addressArea: formData.addressArea,
-      // 区名称
-      addressAreaName: formData.addressArea,
-      // 城市
-      addressCity: formData.addressArea,
-      // 城市名称
-      addressCityName: formData.addressArea,
-      // 省编码
-      addressProvince: formData.addressArea,
-      // 省名称
-      addressProvinceName: formData.addressArea,
-      // 街道乡镇编码
-      addressTown: formData.addressArea,
-      // 街道乡镇名称
-      addressTownName: formData.addressArea,
-      //
-      businessLicenseUrl: formData.addressArea,
-      // 经营范围
-      businessScope: formData.addressArea,
-      // 营业执照地址
-      companyAddress: formData.addressArea,
-      // 公司名称
-      companyName: formData.addressArea,
-      // 公司类型
-      companyType: formData.addressArea,
-      // 法定代表人
-      legalPerson: formData.addressArea,
-      // 经营结束日期
-      operateEndDate: formData.addressArea,
-      // 是否长期经营
-      operatePeriodForeverFlag: formData.addressArea,
-      // 经营开始日期
-      operateStartDate: formData.addressArea,
-      // 密码
-      password: formData.addressArea,
-      // 注册电话号码
-      phone: formData.addressArea,
-      // 期望和问题
-      question: formData.addressArea,
-      // 注册资本
-      registeredCapital: formData.addressArea,
-      // 详细地址
-      specificAddress: formData.addressArea,
-      // 统一社会信用代码
-      taxCode: formData.addressArea,
-      // 组织机构代码
-      taxCodeDesc: formData.addressArea,
+    /**
+     * 注册
+     * */
+    // 现场构建验证对象，避免每次form变化都构建
+    genVdt();
+    // 验证执照
+    if (!vdt.valid()) {
+      return Promise.resolve(false);
+    }
+    // 验证联系人
+    genUserVdt();
+    if (!userVdt.valid()) {
+      return Promise.resolve(false);
+    }
+
+    return cosService.saveCustomerPotential({
       // 联系人姓名
-      userName: formData.addressArea,
+      userName: userFormData.userName,
+      // 区code
+      addressArea: userFormData.addressArea,
+      // 区名称
+      addressAreaName: userFormData.addressAreaName,
+      // 城市
+      addressCity: userFormData.addressCity,
+      // 城市名称
+      addressCityName: userFormData.addressCityName,
+      // 省编码
+      addressProvince: userFormData.addressProvince,
+      // 省名称
+      addressProvinceName: userFormData.addressProvinceName,
+      // 街道乡镇编码
+      addressTown: userFormData.addressTown,
+      // 街道乡镇名称
+      addressTownName: userFormData.addressTownName,
+      // 期望和问题
+      question: userFormData.question,
+      // 详细地址
+      specificAddress: userFormData.specificAddress,
+      // 上传后图片地址
+      businessLicenseUrl: formData.businessLicenseUrl,
+      // 经营范围
+      businessScope: formData.businessScope,
+      // 营业执照地址
+      companyAddress: formData.companyAddress,
+      // 公司名称
+      companyName: formData.companyName,
+      // 公司类型
+      companyType: formData.companyType,
+      // 法定代表人
+      legalPerson: formData.legalPerson,
+      // 经营结束日期
+      operateEndDate: formData.operatePeriodForeverFlag ? '' : formData.operateEndDate,
+      // 是否长期经营
+      operatePeriodForeverFlag: formData.operatePeriodForeverFlag ? '1' : '0',
+      // 经营开始日期
+      operateStartDate: formData.operateStartDate,
+      // 注册资本
+      registeredCapital: formData.registeredCapital,
+      // 统一社会信用代码
+      taxCode: formData.taxCode,
+      // 组织机构代码
+      taxCodeDesc: formData.taxCodeDesc,
+      // 密码
+      password: props.password,
+      // 注册电话号码
+      phone: props.phone,
+    }).then(({ code }) => {
+      return code === '1';
     });
-  }, [formData]);
+  }, [
+    formData,
+    userFormData,
+    genVdt,
+    genUserVdt,
+    props.password,
+    props.phone
+  ]);
+
+  const next = useCallback(() => {
+    /**
+     * 下一步
+     * */
+    toRegister().then((state) => {
+      if (state) {
+        // 进行下一步
+        props.setStep(4);
+      }
+    });
+  }, [toRegister]);
   return (
     <MuiPickersUtilsProvider
       utils={DateFnsUtils}
@@ -428,7 +609,7 @@ function RegisterUpload() {
             <JInput
               name="companyName"
               value={formData.companyName}
-              handChange={valChange}
+              handChange={formValChange}
               placeholder="请按照营业执照填写准确信息"
               border={false}
             />
@@ -440,7 +621,7 @@ function RegisterUpload() {
             <JInput
               name="taxCode"
               value={formData.taxCode}
-              handChange={valChange}
+              handChange={formValChange}
               placeholder="请按照营业执照填写准确信息"
               border={false}
             />
@@ -452,7 +633,7 @@ function RegisterUpload() {
             <JInput
               name="taxCodeDesc"
               value={formData.taxCodeDesc}
-              handChange={valChange}
+              handChange={formValChange}
               placeholder="请按照营业执照填写准确信息"
               border={false}
             />
@@ -464,7 +645,7 @@ function RegisterUpload() {
             <JInput
               name="companyType"
               value={formData.companyType}
-              handChange={valChange}
+              handChange={formValChange}
               placeholder="请按照营业执照填写准确信息"
               border={false}
             />
@@ -476,7 +657,7 @@ function RegisterUpload() {
             <JInput
               name="registeredCapital"
               value={formData.registeredCapital}
-              handChange={valChange}
+              handChange={formValChange}
               placeholder="请按照营业执照填写准确信息"
               border={false}
             />
@@ -488,9 +669,30 @@ function RegisterUpload() {
             <JInput
               name="legalPerson"
               value={formData.legalPerson}
-              handChange={valChange}
+              handChange={formValChange}
               placeholder="请按照营业执照填写准确信息"
               border={false}
+            />
+          )}
+        />
+        <JFiledItem
+          className="registerUpload-filedItem"
+          title="成立日期"
+          renderRight={(
+            <DatePicker
+              margin="normal"
+              id="datePickerCreatedDate"
+              format="yyyy-MM-dd"
+              value={formData.createdDate}
+              cancelLabel="取消"
+              okLabel="确定"
+              clearable
+              clearLabel="清除"
+              placeholder="请选择成立日期"
+              onChange={(date) => formValChange({
+                name: 'createdDate',
+                value: date
+              })}
             />
           )}
         />
@@ -500,15 +702,15 @@ function RegisterUpload() {
           renderRight={(
             <DatePicker
               margin="normal"
-              id="date-picker-dialog"
+              id="datePickerOperateStartDate"
               format="yyyy-MM-dd"
               value={formData.operateStartDate}
               cancelLabel="取消"
               okLabel="确定"
               clearable
               clearLabel="清除"
-              placeholder="请选择开始时间"
-              onChange={(date) => valChange({
+              placeholder="请选择开始日期"
+              onChange={(date) => formValChange({
                 name: 'operateStartDate',
                 value: date
               })}
@@ -521,18 +723,30 @@ function RegisterUpload() {
           renderRight={(
             <DatePicker
               margin="normal"
-              id="operateEndDate"
+              id="datePickerOperateEndDate"
               format="yyyy-MM-dd"
               value={formData.operateEndDate}
               cancelLabel="取消"
               okLabel="确定"
               clearable
               clearLabel="清除"
-              placeholder="请选择结束时间"
-              onChange={(date) => valChange({
+              placeholder="请选择结束日期"
+              disabled={datePickerOperateEndDateDisabled}
+              onChange={(date) => formValChange({
                 name: 'operateEndDate',
                 value: date
               })}
+            />
+          )}
+        />
+        <JFiledItem
+          className="registerUpload-filedItem"
+          title="是否长期"
+          renderRight={(
+            <Checkbox
+              checked={formData.operatePeriodForeverFlag}
+              onChange={foreverFlagChange}
+              color="primary"
             />
           )}
         />
@@ -542,7 +756,7 @@ function RegisterUpload() {
             <JInput
               name="companyAddress"
               value={formData.companyAddress}
-              handChange={valChange}
+              handChange={formValChange}
               placeholder="请按照营业执照填写准确信息"
               border={false}
             />
@@ -555,7 +769,8 @@ function RegisterUpload() {
               className="registerUpload-ta"
               name="businessScope"
               value={formData.businessScope}
-              onChange={valChange}
+              maxLength={1000}
+              onChange={formValChange}
               placeholder="请按照营业执照填写准确信息"
             />
           )}
@@ -566,8 +781,8 @@ function RegisterUpload() {
           renderRight={(
             <JInput
               name="userName"
-              value={formData.userName}
-              handChange={valChange}
+              value={userFormData.userName}
+              handChange={userFormValChange}
               placeholder="请输入姓名"
               border={false}
             />
@@ -580,7 +795,7 @@ function RegisterUpload() {
             <JSelect
               name="addressProvince"
               options={provinceOptions}
-              value={formData.addressProvince}
+              value={userFormData.addressProvince}
               onChange={provinceChange}
             />
           )}
@@ -592,7 +807,7 @@ function RegisterUpload() {
             <JSelect
               name="addressCity"
               options={cityOptions}
-              value={formData.addressCity}
+              value={userFormData.addressCity}
               onChange={cityChange}
             />
           )}
@@ -604,7 +819,7 @@ function RegisterUpload() {
             <JSelect
               name="addressArea"
               options={countryOptions}
-              value={formData.addressArea}
+              value={userFormData.addressArea}
               onChange={countryChange}
             />
           )}
@@ -616,18 +831,19 @@ function RegisterUpload() {
             <JSelect
               name="addressTown"
               options={streetOptions}
-              value={formData.addressTown}
+              value={userFormData.addressTown}
               onChange={streetChange}
             />
           )}
         />
         <JFiledItem
           title="详细地址"
+          required
           renderRight={(
             <JInput
               name="specificAddress"
-              value={formData.specificAddress}
-              handChange={valChange}
+              value={userFormData.specificAddress}
+              handChange={userFormValChange}
               placeholder="请输入店铺的街道/门牌号等详细地址"
               border={false}
             />
@@ -639,18 +855,43 @@ function RegisterUpload() {
             <textarea
               className="registerUpload-ta"
               name="question"
-              value={formData.question}
-              onChange={valChange}
+              maxLength={60}
+              value={userFormData.question}
+              onChange={userFormValChange}
               placeholder="请输入内容"
             />
           )}
         />
+        <div
+          className="register-field-item register-btn-wrap"
+        >
+          {
+            props.step > 1 && (
+              <JButton
+                className="mr28"
+                type="primary"
+                onClick={() => props.setStep(2)}
+                text="上一步"
+              />
+            )
+          }
+          <JButton
+            onClick={next}
+            text="注册"
+          />
+        </div>
       </div>
     </MuiPickersUtilsProvider>
   );
 }
 
-RegisterUpload.propTypes = {};
+RegisterUpload.propTypes = {
+  // 步骤
+  step: PropTypes.number,
+  password: PropTypes.string,
+  phone: PropTypes.string,
+  setStep: PropTypes.func
+};
 
 RegisterUpload.defaultProps = {};
 export default RegisterUpload;
