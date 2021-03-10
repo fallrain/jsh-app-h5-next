@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  BrowserRouter,
+  HashRouter,
 } from 'react-router-dom';
 import {
   createMuiTheme,
@@ -27,13 +27,13 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   // <React.StrictMode>
-  <BrowserRouter
+  <HashRouter
     basename={process.env.PUBLIC_URL}
   >
     <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>
-  </BrowserRouter>,
+  </HashRouter>,
   // </React.StrictMode>,
   document.getElementById('root')
 );
