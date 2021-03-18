@@ -1,9 +1,13 @@
+import store from 'src/store/index';
 import axios from 'axios';
 import qs from 'qs';
 import {
   toast
 } from 'react-toastify';
 
+const {
+  dispatch
+} = store;
 const ax = axios.create();
 
 ax.defaults = Object.assign(
@@ -17,15 +21,19 @@ ax.defaults = Object.assign(
 const loadingAy = [];
 
 function closeLoading() {
-// 关闭遮罩
+  // 关闭遮罩
   if (loadingAy.length === 1) {
-    // document.querySelector('.js-b-loading').style = 'display:none;';
+    dispatch({
+      type: 'hideLoading'
+    });
   }
   loadingAy.length--;
 }
 function showLoading() {
   /* 打开遮罩 */
-  // document.querySelector('.js-b-loading').style = 'display:block;';
+  dispatch({
+    type: 'showLoading'
+  });
   return new Date().getTime();
 }
 
@@ -69,7 +77,6 @@ ax.interceptors.request.use((config) => {
   }
   return config;
 }, (error) => {
-  debugger;
   if (!error.config.params.noLoading) {
     closeLoading();
   }
@@ -96,7 +103,6 @@ ax.interceptors.response.use((response) => {
   }
   return response.data;
 }, (error) => {
-  debugger;
   if (!error.config.params.noLoading) {
     closeLoading();
   }

@@ -4,6 +4,10 @@ import {
   BrowserRouter,
 } from 'react-router-dom';
 import {
+  connect,
+  Provider
+} from 'react-redux';
+import {
   createMuiTheme,
   ThemeProvider
 } from '@material-ui/core/styles';
@@ -11,6 +15,7 @@ import {
   zhCN
 } from '@material-ui/core/locale';
 
+import store from 'src/store/index';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 // css 区域
@@ -24,14 +29,20 @@ const theme = createMuiTheme({
     primary: { main: '#1976d2' },
   },
 }, zhCN);
+const mapStateToProps = (state) => ({
+  app: state.app
+});
 
+const AppContainer = connect(mapStateToProps)(App);
 ReactDOM.render(
   // <React.StrictMode>
   <BrowserRouter
     basename={process.env.PUBLIC_URL}
   >
     <ThemeProvider theme={theme}>
-      <App />
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
     </ThemeProvider>
   </BrowserRouter>,
   // </React.StrictMode>,

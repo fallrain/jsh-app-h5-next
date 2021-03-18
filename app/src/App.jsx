@@ -3,15 +3,22 @@ import React from 'react';
 import {
   ToastContainer
 } from 'react-toastify';
-import RouterPage from './router';
+import AppContent from 'src/content/app/app.content';
+import RouterPage from 'src/router/index';
 // toast css
 import 'react-toastify/dist/ReactToastify.css';
+import JLoading from 'src/componets/common/JLoading/JLoading.jsx';
 
-function App() {
+function App(props) {
   return (
     <div className="App">
-      <RouterPage />
-      <ToastContainer />
+      <AppContent.Provider value="">
+        <RouterPage />
+        <ToastContainer />
+        <JLoading
+          show={props.app.isLoading}
+        />
+      </AppContent.Provider>
     </div>
   );
 }
