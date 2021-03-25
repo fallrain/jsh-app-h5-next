@@ -1,4 +1,4 @@
-import util from '../util/index';
+import util from '../util';
 
 const baseURL = 'coc/api';
 const urls = {

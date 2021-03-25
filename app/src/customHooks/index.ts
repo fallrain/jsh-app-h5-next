@@ -1,17 +1,18 @@
 import {
   useCallback,
   useEffect,
-  useRef,
+  useRef
 } from 'react';
-import {
-  toast
-} from 'react-toastify';
 
-function useMethod(method, deps) {
+interface IMethod {
+  (...args: any[]): any
+}
+
+function useMethod(method: IMethod, deps: any) {
   useCallback(method, deps);
 }
 
-function usePrevious(value) {
+function usePrevious(value:any) {
   const ref = useRef();
   useEffect(() => {
     ref.current = value;
@@ -21,5 +22,5 @@ function usePrevious(value) {
 
 export {
   useMethod,
-  usePrevious,
+  usePrevious
 };

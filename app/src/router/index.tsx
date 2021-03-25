@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 // 注册页面
 const Register = lazy(() => import('../pages/register/register'));
-export default function () {
+export default function ():React.ReactElement {
   return (
     <Suspense
       fallback=""

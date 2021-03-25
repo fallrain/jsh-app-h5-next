@@ -1,10 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './jLoading.scss';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import TransverseLoading from 'react-loadingg/lib/TransverseLoading';
 
-function JLoading(props) {
+interface IJLoading {
+  // 显示隐藏
+  show?: boolean
+}
+
+function JLoading(props: IJLoading): React.ReactElement {
   return (
     <div
       className={classNames([
@@ -16,11 +22,6 @@ function JLoading(props) {
     </div>
   );
 }
-
-JLoading.propTypes = {
-  // 显示隐藏
-  show: PropTypes.bool
-};
 
 JLoading.defaultProps = {
   show: false

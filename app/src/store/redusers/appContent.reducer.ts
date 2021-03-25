@@ -1,6 +1,11 @@
-export default function reducer(state = {
-  isLoading: false
-}, action) {
+import Redux from 'redux';
+
+export default function reducer(
+  state = {
+    isLoading: false
+  },
+  action: Redux.AnyAction
+) {
   switch (action.type) {
     case 'showLoading':
       return {

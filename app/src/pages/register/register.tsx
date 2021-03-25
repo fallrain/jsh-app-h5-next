@@ -1,24 +1,25 @@
 import React, {
   useState,
   useEffect,
-  useCallback
+  useCallback,
+  FC
 } from 'react';
 
 import './register.scss';
-import cosService from 'src/service/coc/cosService';
-import JValidate from 'src/lib/jValidate/JValidate.js';
+import cocService from 'src/service/coc/cocService';
+import JValidate from 'src/lib/jValidate/JValidate';
 import RegisterStep from 'src/componets/register/RegisterStep';
 import registerHead from 'src/assets/img/register/registerHead.png';
 import JSendCodeBtn from 'src/componets/common/JSendCodeBtn/JSendCodeBtn';
 import JInput from 'src/componets/form/JInput/JInput';
 import JButton from 'src/componets/common/button/JButton';
-import RegisterUpload from 'src/componets/register/RegisterUpload.jsx';
+import RegisterUpload from 'src/componets/register/RegisterUpload';
 import {
   errorToast
-} from 'src/lib/util/index';
-import RegisterSuccess from 'src/componets/register/RegisterSuccess.jsx';
+} from 'src/lib/util';
+import RegisterSuccess from 'src/componets/register/RegisterSuccess';
 
-function Register() {
+const Register:FC = () => {
   const [formData, setFormData] = useState({
     // 手机号码
     telphone: '',
@@ -30,11 +31,11 @@ function Register() {
     passwordRepeat: '',
   });
   // 验证对象
-  const [vdt, setVdt] = useState(null);
+  const [vdt, setVdt] = useState<JValidate>();
   // 密码验证对象
-  const [passwordVdt, setPasswordVdt] = useState(null);
+  const [passwordVdt, setPasswordVdt] = useState<JValidate>();
   // 步骤
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState<number>(1);
 
   const genVdt = useCallback(() => {
     /**
@@ -76,7 +77,7 @@ function Register() {
     genVdt();
   }, [genVdt]);
 
-  const validPassword = useCallback((val, isRepeat) => {
+  const validPassword = useCallback((val:any, isRepeat:boolean):boolean => {
     /**
      * 验证密码
      * */
@@ -107,7 +108,7 @@ function Register() {
         // 验证码
         passwordRepeat: {
           required: true,
-          custom: (val) => validPassword(val, true)
+          custom: (val:any) => validPassword(val, true)
         },
       },
       messages: {
@@ -134,7 +135,10 @@ function Register() {
     genPasswordVdt();
   }, [genPasswordVdt]);
 
-  const valChange = useCallback(({ name, value }) => {
+  const valChange = useCallback(({
+    name,
+    value
+  }) => {
     /**
      *  值改变方法，组件受控方法
      * */
@@ -148,7 +152,7 @@ function Register() {
     /**
      * 发送验证码
      * */
-    return cosService.sendVerifyCode({
+    return cocService.sendVerifyCode({
       telphone: formData.telphone
     });
   }, [formData.telphone]);
@@ -158,6 +162,8 @@ function Register() {
       /**
        *  发送验证码页面的下一步
        *  */
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       if (vdt.valid({
         includeKeys: {
           telphone: true,
@@ -166,7 +172,7 @@ function Register() {
         }
       })) {
         // 检查验证码
-        const { code } = await cosService.checkVerifyCode({
+        const { code } = await cocService.checkVerifyCode({
           telphone: formData.telphone,
           verifyCode: formData.verifyCode,
         });
@@ -187,7 +193,7 @@ function Register() {
     /**
        *  发送验证码页面的下一步
        *  */
-    if (passwordVdt.valid()) {
+    if (passwordVdt && passwordVdt.valid()) {
       setStep(3);
     }
   },
@@ -326,6 +332,6 @@ function Register() {
       </div>
     </div>
   );
-}
+};
 
 export default Register;

@@ -2,11 +2,11 @@ import {
   toast
 } from 'react-toastify';
 
-function errorToast(content, option = {}) {
+function errorToast(content: string, option = {}): void {
   /**
    * 默认的显示错误对话框
    * */
-  return toast.error(content, {
+  toast.error(content, {
     position: 'top-center',
     autoClose: 2000,
     hideProgressBar: false,
@@ -18,11 +18,11 @@ function errorToast(content, option = {}) {
   });
 }
 
-function warningToast(content, option = {}) {
+function warningToast(content: string, option = {}): void {
   /**
    * 默认的显示错误对话框
    * */
-  return toast.warning(content, {
+  toast.warning(content, {
     position: 'top-center',
     autoClose: 2000,
     hideProgressBar: false,

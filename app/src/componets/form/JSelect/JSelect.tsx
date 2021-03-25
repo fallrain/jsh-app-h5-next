@@ -1,13 +1,43 @@
 import React, {
   useCallback,
-  useEffect,
   useRef
 } from 'react';
 import PropTypes from 'prop-types';
 import './jSelect.scss';
-import classNames from 'classnames';
 
-function JSelect(props) {
+interface IJSelectOption {
+  /**
+   * 传入的select的option
+   * */
+  key: string | number,
+  value: string | number,
+}
+
+interface IJSelectChangeArgs {
+  // select的name
+  name: string | number,
+  // key
+  value: string | number,
+  // 文本值
+  text: string | number,
+  // 选中option
+  option: IJSelectOption
+}
+
+interface IJSelect {
+  // select name
+  name: string,
+  // select value
+  value: string | number
+  // 选项
+  options: IJSelectOption[]
+  placeholder?: string,
+  onChange?: { ({
+    name, value, text, option
+  }: IJSelectChangeArgs): any }
+}
+
+function JSelect(props: IJSelect) {
   // select 引用
   const selectRef = useRef(null);
   /**
@@ -44,16 +74,16 @@ function JSelect(props) {
         className="jSelect"
         onChange={handleChange}
       >
+        <option
+          key=""
+          value=""
+          disabled
+        >{props.placeholder}
+        </option>
         {
-          <option
-            key=""
-            value=""
-            disabled
-          >{props.placeholder}
-          </option>
-        }
-        {
-          props.options.map(({ key, value }) => (
+          props.options.map(({
+            key, value
+          }) => (
             <option
               key={key}
               value={key}
@@ -69,17 +99,6 @@ function JSelect(props) {
     </div>
   );
 }
-
-JSelect.propTypes = {
-  // 选项
-  options: PropTypes.arrayOf(PropTypes.shape({
-    key: PropTypes.string,
-    value: PropTypes.string
-  })).isRequired,
-  // select name
-  name: PropTypes.string,
-  placeholder: PropTypes.string,
-};
 
 JSelect.defaultProps = {
   placeholder: '请选择'

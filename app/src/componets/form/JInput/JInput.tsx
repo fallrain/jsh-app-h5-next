@@ -1,24 +1,56 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { ChangeEvent } from 'react';
 import './jInput.scss';
 import classNames from 'classnames';
 
-class JInput extends React.Component {
-  constructor(props) {
+interface IJInput {
+  // input name
+  name: string
+  // 输入框的值
+  value: string | number
+  // 输入框类型
+  type: string
+  className?: string
+  placeholder?: string
+  border?: boolean
+  renderLeft?: React.ReactNode
+  renderRight?: React.ReactNode
+  handChange: {
+    ({
+      name,
+      value
+    }: {
+      name: string,
+      value: string | number
+    }): any
+  }
+}
+
+interface JInputState {
+  $type: string
+}
+
+class JInput extends React.Component<IJInput, JInputState> {
+  static defaultProps = {
+    type: 'text',
+    placeholder: '',
+    border: true
+  };
+
+  constructor(props: IJInput) {
     super(props);
     const {
-      value,
       type
     } = this.props;
     this.state = {
-      $type: type,
+      $type: type
     };
   }
 
-  valChange = ({ target }) => {
+  valChange = (e:ChangeEvent<HTMLInputElement>) => {
     /**
      *  值改变方法，组件受控方法
      *  */
+    const target = e.target;
     const {
       handChange
     } = this.props;
@@ -40,7 +72,7 @@ class JInput extends React.Component {
       name: this.props.name,
       value: ''
     }));
-  }
+  };
 
   togglePassword = () => {
     /**
@@ -50,7 +82,7 @@ class JInput extends React.Component {
     this.setState((pre) => ({
       $type: pre.$type === 'password' ? 'text' : 'password'
     }));
-  }
+  };
 
   render() {
     const {
@@ -65,14 +97,14 @@ class JInput extends React.Component {
       type,
       className,
       placeholder,
-      border,
+      border
     } = this.props;
     return (
       <div
         className={classNames([
           'jInput-wrap',
           className,
-          !border && 'no-border',
+          !border && 'no-border'
         ])}
       >
         <div className="jInput-left">
@@ -106,35 +138,5 @@ class JInput extends React.Component {
     );
   }
 }
-
-JInput.propTypes = {
-  // 输入框name
-  name: PropTypes.string.isRequired,
-  // 输入框的值
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
-  // change事件
-  handChange: PropTypes.func,
-  // 输入框类型
-  type: PropTypes.string,
-  placeholder: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
-  jkey: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
-  // 是否有边框
-  border: PropTypes.bool
-};
-
-JInput.defaultProps = {
-  type: 'text',
-  placeholder: '',
-  border: true
-};
 
 export default JInput;

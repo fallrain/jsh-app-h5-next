@@ -1,76 +1,78 @@
-const rules = {
-  custom(val, fun) {
+const rules: Record<string, (...[propName]: any) => boolean> = {
+  custom(val: any, fun: (...[propName]: any) => any): boolean {
     /**
      * 自定义验证
      * */
     return fun(val);
   },
-  required(val) {
+  required(val: any): boolean {
     return val != null && /\S+/.test(val);
   },
-  objRequired(val, deepName) {
+  objRequired(val: any, deepName: string): boolean {
     // deepName: 'parent.child.value'
     deepName.split('.').forEach((key) => {
       val = val[key];
     });
     return val != null && /\S+/.test(val);
   },
-  arrayRequired(val, deepName) {
+  arrayRequired(val: any, deepName: string): boolean {
     // deepName: 'parent.child.value'
     deepName.split('.').forEach((key) => {
       val = val[key];
     });
     return val && val.length;
   },
-  number(val) {
+  number(val: any): boolean {
     return /^\d+$/.test(val);
   },
-  float(val) {
+  float(val: any): boolean {
     return /^[+]?\d+(\.\d+)?$/.test(val);
   },
-  mobile(val) {
+  mobile(val: any): boolean {
     return /^(1[3456789]\d{9})?$/.test(val);
   },
-  length(val, num) {
+  length(val: any, num: number): boolean {
     /* 长度 */
     return val.replace(/\s/g, '').length === num;
   },
-  maxLength(val, num) {
+  maxLength(val: any, num: number): boolean {
     /* 最大长度 */
     return val.replace(/\s/g, '').length <= num;
   },
-  minLength(val, num) {
+  minLength(val: any, num: number): boolean {
     /* 最大小长度 */
     return val.replace(/\s/g, '').length >= num;
   },
-  max(val, num) {
+  max(val: any, num: number): boolean {
     return val * 1 <= num * 1;
   },
-  min(val, num) {
+  min(val: any, num: number): boolean {
     return val * 1 >= num * 1;
   },
-  encn(val) {
+  encn(val: any): boolean {
     /* 英语字母 汉字 */
     return /^[\u4E00-\u9FA5a-zA-Z]+$/.test(val);
   },
-  cn(val) {
+  cn(val: any): boolean {
     /* 汉字 */
     return /^[\u4E00-\u9FA5]+$/.test(val);
   },
-  en(val) {
+  en(val: any): boolean {
     /* 字母 */
     return /^[a-zA-Z]+$/.test(val);
   },
-  enOrNumber(val) {
+  enOrNumber(val: any): boolean {
     /* 数字字母 */
     return /^[a-zA-Z0-9]+$/.test(val);
   },
-  IDCard(val) {
+  IDCard(val: any): boolean {
     /* 身份证号 */
     if (!val && val !== 0) {
       return true;
     }
-    const aCity = {
+    const cityMap: {
+      [propName: string]: string
+    } = {
       11: '北京',
       12: '天津',
       13: '河北',
@@ -108,40 +110,40 @@ const rules = {
       91: '国外'
     };
 
-    function cidInfo(sId) {
+    function cidInfo(id: string): boolean {
       let iSum = 0;
-      if (!/^\d{17}(\d|x)$/i.test(sId)) {
+      if (!/^\d{17}(\d|x)$/i.test(id)) {
         return false;
       }
-      sId = sId.replace(/x$/i, 'a');
-      if (aCity[sId.substr(0, 2) * 1] == null) {
-        return false;// "Error:非法地区";
+      id = id.replace(/x$/i, 'a');
+      if (!cityMap[id.substr(0, 2)]) {
+        return false; // "Error:非法地区";
       }
-      const sBirthday = `${sId.substr(6, 4)}-${Number(sId.substr(10, 2))}-${Number(sId.substr(12, 2))}`;
+      const sBirthday = `${id.substr(6, 4)}-${Number(id.substr(10, 2))}-${Number(id.substr(12, 2))}`;
       const d = new Date(sBirthday.replace(/-/g, '/'));
-      if (sBirthday !== (`${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`)) {
-        return false;// "Error:非法生日";
+      if (sBirthday !== `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`) {
+        return false; // "Error:非法生日";
       }
       for (let i = 17; i >= 0; i--) {
-        iSum += (Math.pow(2, i) % 11) * parseInt(sId.charAt(17 - i), 11);
+        iSum += (Math.pow(2, i) % 11) * parseInt(id.charAt(17 - i), 11);
       }
       if (iSum % 11 !== 1) {
-        return false;// "Error:非法证号";
+        return false; // "Error:非法证号";
       }
-      return `${aCity[(sId.substr(0, 2)) * 1]},${sBirthday},${sId.substr(16, 1) % 2 ? '男' : '女'}`;
+      return !!`${cityMap[id.substr(0, 2)]},${sBirthday},${+id.substr(16, 1) % 2 ? '男' : '女'}`;
     }
 
     return cidInfo(val);
   },
-  multiple(val, num) {
+  multiple(val: any, num: number): boolean {
     /* 倍数 */
     return val % num === 0;
   },
-  email(val) {
+  email(val: any): boolean {
     return /^([A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+)?$/.test(val);
   }
 };
-const messages = {
+const messages: Record<string, string> = {
   required: '不能为空',
   number: '必须为整数',
   float: '必须为数字',

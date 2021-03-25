@@ -1,7 +1,7 @@
 import React from 'react';
 import './css/registerSuccess.scss';
 
-function RegisterSuccess() {
+const RegisterSuccess: React.FC = function () {
   return (
     <div>
       <div className="registerSuccess-icon-wrap">
@@ -12,9 +12,7 @@ function RegisterSuccess() {
       <div className="registerSuccess-text">恭喜注册成功</div>
     </div>
   );
-}
-
-RegisterSuccess.propTypes = {};
+};
 
 RegisterSuccess.defaultProps = {};
 export default RegisterSuccess;

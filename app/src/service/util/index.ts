@@ -1,5 +1,5 @@
 const util = {
-  addPrefix(baseURL, urls) {
+  addPrefix(baseURL:string, urls:Record<string, string> | Record<string, {(...args:any[]):string}>) {
     Object.entries(urls).forEach(([key, value]) => {
       if (toString.call(value) === '[object Function]') {
         urls[key] = function (...args) {

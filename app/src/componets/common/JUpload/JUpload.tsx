@@ -7,21 +7,54 @@ import './jUpload.scss';
 import classNames from 'classnames';
 import {
   FilePond,
+  FilePondProps,
   registerPlugin
 } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import SemipolarLoading from 'react-loadingg/lib/SemipolarLoading';
-import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import FilePondPluginFileValidateSize, {
+  FilePondPluginFileValidateSizeProps
+} from 'filepond-plugin-file-validate-size';
+import FilePondPluginFileValidateType, {
+  FilePondPluginFileValidateTypeProps
+} from 'filepond-plugin-file-validate-type';
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
-function JUpload(props) {
+
+// type Diff<T extends keyof any, U extends keyof any> =
+//   ({ [P in T]: P } & { [P in U]: never } & { [x: string]: never })[T];
+// type Overwrite<T, U> = Pick<T, Diff<keyof T, keyof U>> & U;
+
+type IJUploadParent = FilePondProps &
+  FilePondPluginFileValidateSizeProps &
+  FilePondPluginFileValidateTypeProps & {
+  // 最大上传文件数量
+  maxFiles: number
+}
+
+// type IJUpload = Exclude<IJUploadParent, 'maxTotalFileSize'> & {
+//   maxTotalFileSize?: string | null
+// }
+type IJUpload = Omit<IJUploadParent, 'maxTotalFileSize'> & {
+  maxTotalFileSize?: string;
+}
+
+interface IImgSrc {
+  // 图片路径
+  src: string | ArrayBuffer | any
+  // 图片key
+  key: string | number
+}
+
+function JUpload(props: IJUpload) {
   // 图片地址
-  const [imgSrcs, setImgSrcs] = useState([]);
+  const [imgSrcs, setImgSrcs]: [IImgSrc[], any] = useState([]);
   // 上传组件pond实例
-  const [pond, setPond] = useState(null);
+  const [pond, setPond] = useState<FilePond | null>();
   // 加载对象
-  const [loadingMap, setLoadingMap] = useState({});
+  const [loadingMap, setLoadingMap] = useState<Record<string, string | number>>({});
 
   const onAdd = useCallback((ins) => {
     /**
@@ -51,7 +84,7 @@ function JUpload(props) {
         setImgSrcs([
           ...imgSrcs,
           {
-            src: e.target.result,
+            src: (e.target && e.target.result) || '',
             key: ins.id
           }
         ]);
@@ -86,7 +119,7 @@ function JUpload(props) {
     /**
      * 删除一个图片
      * */
-    pond.removeFile(key);
+    pond && pond.removeFile(key);
     imgSrcs.splice(index, 1);
     setImgSrcs(imgSrcs);
   }, [pond, imgSrcs]);
@@ -103,16 +136,14 @@ function JUpload(props) {
               className="jUpload-preview-img"
               src={item.src}
             />
-            {
-              <div
-                className="jUpload-preview-del-wrap"
-                onClick={() => removeImg(item.key, index)}
-              >
-                <i
-                  className="iconfont icon-guanbi jUpload-preview-del"
-                />
-              </div>
-            }
+            <div
+              className="jUpload-preview-del-wrap"
+              onClick={() => removeImg(item.key, index)}
+            >
+              <i
+                className="iconfont icon-guanbi jUpload-preview-del"
+              />
+            </div>
             {
               loadingMap[item.key] && (
                 <SemipolarLoading />
@@ -120,19 +151,19 @@ function JUpload(props) {
             }
           </div>
         ))
-       }
+      }
       <label
         className={classNames([
           'jUpload-wrap',
-          props.maxFiles <= imgSrcs.length && 'hidden'
+          (props.maxFiles || 1) <= imgSrcs.length && 'hidden'
         ])}
       >
         <FilePond
           ref={(ref) => setPond(ref)}
           allowDrop={false}
           labelIdle=""
+          maxTotalFileSize={props.maxTotalFileSize || null}
           {...props}
-          chunkSize="100"
           onaddfilestart={onAdd}
           onaddfile={onAddEnd}
           onprocessfile={onEnd}
@@ -144,9 +175,4 @@ function JUpload(props) {
   );
 }
 
-JUpload.propTypes = {
-  customValid: PropTypes.func
-};
-
-JUpload.defaultProps = {};
 export default JUpload;

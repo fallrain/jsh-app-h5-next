@@ -2,21 +2,39 @@ import classNames from 'classnames';
 import React, {
   useState
 } from 'react';
-import PropTypes from 'prop-types';
 import {
   toast
 } from 'react-toastify';
 import {
   rules
-} from 'src/lib/jValidate/JValidateRules.js';
+} from 'src/lib/jValidate/JValidateRules';
 import './jSendCodeBtn.scss';
 
-function JSendCodeBtn(props) {
+interface IJSendCodeBtn {
+  // 时间
+  time?: number,
+  // 按钮类型
+  type?: string,
+  // 发送验证码函数
+  send?: () => Promise<{ code: string }>,
+  // 按钮文字
+  btnText?: string,
+  phone: string,
+  beforeSend?: { (...args: any[]): any }
+  // 接口调用后
+  callBack?: { (...args: any[]): any }
+  // 发送后
+  afterSend?: { (...args: any[]): any }
+  // 接口报错
+  errorCallBack?: { (...args: any[]): any }
+}
+
+function JSendCodeBtn(props: IJSendCodeBtn) {
   /**
    * 发送验证码按钮
    * */
-  const [disabled, setDisabled] = useState(false);
-  const [btnText, setBtnText] = useState(props.btnText);
+  const [disabled, setDisabled] = useState<boolean>(false);
+  const [btnText, setBtnText] = useState<string>(props.btnText || '发送验证码');
 
   async function sendCode() {
     /* 发送验证码 */
@@ -26,7 +44,7 @@ function JSendCodeBtn(props) {
       callBack,
       afterSend,
       errorCallBack,
-      time,
+      time
     } = props;
     if (beforeSend && !beforeSend()) {
       return;
@@ -40,7 +58,7 @@ function JSendCodeBtn(props) {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined
       });
       return;
     }
@@ -52,7 +70,7 @@ function JSendCodeBtn(props) {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined
       });
       return;
     }
@@ -73,7 +91,7 @@ function JSendCodeBtn(props) {
     if (afterSend) {
       afterSend();
     }
-    let trueTime = time;
+    let trueTime = time || 60;
     setDisabled(true);
     setBtnText(`${trueTime}秒后可重发`);
     const interval = setInterval(() => {
@@ -101,33 +119,4 @@ function JSendCodeBtn(props) {
   );
 }
 
-JSendCodeBtn.propTypes = {
-  // 按钮文字
-  btnText: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
-  time: PropTypes.number,
-  // 按钮类型
-  type: PropTypes.string,
-  // 发送前
-  beforeSend: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.any,
-  ]),
-  // 发送验证码函数
-  send: PropTypes.func,
-  // 接口调用后
-  callBack: PropTypes.func,
-  // 接口报错
-  errorCallBack: PropTypes.func,
-  // 发送后
-  afterSend: PropTypes.func,
-};
-
-JSendCodeBtn.defaultProps = {
-  btnText: '获取验证码',
-  time: 60,
-  type: ''
-};
 export default JSendCodeBtn;

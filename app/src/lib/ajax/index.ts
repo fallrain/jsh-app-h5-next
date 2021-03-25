@@ -1,5 +1,7 @@
 import store from 'src/store/index';
-import axios from 'axios';
+import axios, {
+  AxiosResponse
+} from 'axios';
 import qs from 'qs';
 import {
   toast
@@ -8,6 +10,14 @@ import {
 const {
   dispatch
 } = store;
+
+export interface Result {
+  code: string
+  data?: Record<string, any> | Array<Record<string, any>> | Array<any>
+  msg?: any
+  response?: AxiosResponse
+}
+
 const ax = axios.create();
 
 ax.defaults = Object.assign(
@@ -29,6 +39,7 @@ function closeLoading() {
   }
   loadingAy.length--;
 }
+
 function showLoading() {
   /* 打开遮罩 */
   dispatch({
@@ -37,7 +48,7 @@ function showLoading() {
   return new Date().getTime();
 }
 
-function showError(msg) {
+function showError(msg?: string | Record<string, any>): void {
   let errorMsg;
   // 无错误返回请求失败
   // 对象类型解析错误
@@ -61,7 +72,7 @@ function showError(msg) {
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
-    progress: undefined,
+    progress: undefined
   });
 }
 
@@ -92,75 +103,82 @@ ax.interceptors.response.use((response) => {
   if (!response.config.params.noLoading) {
     closeLoading();
   }
-  const { code, msg } = response.data;
+  const {
+    code,
+    msg
+  } = response.data;
   if (!(response.config.params && response.config.params.requestNoToast)) {
     if (code !== '1') {
       showError(msg);
     }
   }
   if (customOptions && customOptions.returnResponse) {
-    return response;
+    // 返回类型必须符合AxiosResponse
+    return {
+      ...response,
+      data: response,
+    };
   }
-  return response.data;
+  return response;
 }, (error) => {
   if (!error.config.params.noLoading) {
     closeLoading();
   }
   showError(error);
   return {
-    code: -1
+    data: {
+      code: -1
+    }
   };
 });
 
-const axGet = function (url, params, options) {
+const axGet = function (
+  url: string,
+  params?: Record<string, any>,
+  options?: Record<string, any>
+): Promise<Result> {
   return ax({
-    headers: { 'content-type': 'application/x-www-form-urlencoded,charset=UTF-8', },
+    headers: { 'content-type': 'application/x-www-form-urlencoded,charset=UTF-8' },
     method: 'get',
     url,
     params,
     ...options
-  });
+  }).then((res) => res.data);
 };
 
-const axGetUrl = function (url, appendUrl) {
-  return ax({
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded,charset=UTF-8',
-    },
-    method: 'get',
-    url: `${url}/${appendUrl}`,
-  });
-};
-
-const axPost = function (url, data, params, options) {
+const axPost = function (
+  url: string,
+  data?: Record<string, any>,
+  params?: Record<string, any>,
+  options?: Record<string, any>
+): Promise<Result> {
   return ax({
     method: 'post',
     url,
     data: qs.stringify(data),
     params,
     ...options
-  });
+  }).then((res) => res.data);
 };
 
-const axPostFile = function (url, params, options) {
-  return ax.post(url, params, options);
-};
-
-const axPostJson = function (url, data, params, options) {
+const axPostJson = function (
+  url: string,
+  data?: Record<string, any>,
+  params?: Record<string, any>,
+  options?: Record<string, any>
+): Promise<Result> {
   return ax({
     method: 'post',
     url,
     data,
     params,
     ...options
-  });
+  }).then((res) => res.data);
 };
 export default ax;
 
 export {
   axGet,
   axPost,
-  axPostFile,
-  axPostJson,
-  axGetUrl
+  axPostJson
 };

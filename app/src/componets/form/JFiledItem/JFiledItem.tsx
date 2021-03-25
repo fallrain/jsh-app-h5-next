@@ -1,9 +1,25 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { ReactNode } from 'react';
 import './jFiledItem.scss';
 import classNames from 'classnames';
 
-function JFiledItem(props) {
+interface IJFiledItem {
+  // 标题
+  title?: string | number
+  // 额外的类名
+  className?: string,
+  // 是否有必填标记
+  required?: boolean,
+  // 是否有箭头
+  arrow?: boolean,
+  // 右箭头点击事件
+  arrowClick?: { (): any },
+  // 右侧节点
+  renderRight?: string | ReactNode
+  // 底部节点
+  renderBottom?: string | ReactNode
+}
+
+function JFiledItem(props: IJFiledItem) {
   /**
    * 表单输入条目
    * */
@@ -58,22 +74,6 @@ function JFiledItem(props) {
     </div>
   );
 }
-
-JFiledItem.propTypes = {
-  // 标题
-  title: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
-  // 额外的类名
-  className: PropTypes.string,
-  // 是否有必填标记
-  required: PropTypes.bool,
-  // 是否有箭头
-  arrow: PropTypes.bool,
-  // 右箭头点击事件
-  arrowClick: PropTypes.func,
-};
 
 JFiledItem.defaultProps = {
   title: '',

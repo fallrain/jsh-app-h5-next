@@ -1,17 +1,30 @@
-import {
-  toast
-} from 'react-toastify';
+import { toast } from 'react-toastify';
 import {
   rules,
   messages
 } from './JValidateRules';
 
+interface JValidateOption {
+  formData: Record<string, any>;
+  rules: {
+    [propName:string]:any
+  };
+  messages: Record<string, Record<string, string>>;
+}
+
+interface JValidFunOption{
+  includeKeys?: Record<string, boolean>;
+  [propName:string]:any
+}
+
 export default class {
-  constructor(option) {
+  option: JValidateOption;
+
+  constructor(option: JValidateOption) {
     this.option = option;
   }
 
-  showError(msg) {
+  showError(msg: string): void {
     /**
      *展示错误信息
      * */
@@ -26,15 +39,13 @@ export default class {
     });
   }
 
-  checkRuleType() {
+  checkRuleType(): void {
     /**
      * 检查rule type，如果是函数的话，不使用
      * */
   }
 
-  valid({
-    includeKeys
-  } = {}) {
+  valid({ includeKeys }:JValidFunOption = {}): boolean {
     /**
      * 验证整个表单
      * @includeKeys 只验证包含的字段
@@ -42,7 +53,7 @@ export default class {
     const vdtMap = this.option.rules;
     for (const p in vdtMap) {
       if (!includeKeys || (includeKeys && includeKeys[p])) {
-        const regs = vdtMap[p];
+        const regs:any = vdtMap[p];
         for (const i in regs) {
           if (regs[i] === false) {
             continue;
@@ -60,7 +71,7 @@ export default class {
     return true;
   }
 
-  validOne(name) {
+  validOne(name: string): boolean {
     const regs = this.option.rules[name];
     for (const i in regs) {
       if (!rules[i](this.option.formData[name], regs[i])) {
@@ -74,3 +85,8 @@ export default class {
     return true;
   }
 }
+
+export type {
+  JValidateOption,
+  JValidFunOption
+};

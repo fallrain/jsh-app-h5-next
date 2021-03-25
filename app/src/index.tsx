@@ -1,21 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import {
-  BrowserRouter,
-} from 'react-router-dom';
-import {
-  connect,
-  Provider
+  connect, Provider
 } from 'react-redux';
 import {
-  createMuiTheme,
-  ThemeProvider
+  createMuiTheme, ThemeProvider
 } from '@material-ui/core/styles';
-import {
-  zhCN
-} from '@material-ui/core/locale';
+import { zhCN } from '@material-ui/core/locale';
 
-import store from 'src/store/index';
+import store from 'src/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 // css 区域
@@ -24,13 +18,18 @@ import './assets/css/base.scss';
 import './assets/css/common.scss';
 import './index.scss';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: '#1976d2' },
+const theme = createMuiTheme(
+  {
+    palette: {
+      primary: {
+        main: '#1976d2',
+      },
+    },
   },
-}, zhCN);
-const mapStateToProps = (state) => ({
-  app: state.app
+  zhCN
+);
+const mapStateToProps = (state: any) => ({
+  app: state.app,
 });
 
 const AppContainer = connect(mapStateToProps)(App);
@@ -38,8 +37,11 @@ ReactDOM.render(
   // <React.StrictMode>
   <BrowserRouter
     basename={process.env.PUBLIC_URL}
+    keyLength={2}
   >
-    <ThemeProvider theme={theme}>
+    <ThemeProvider
+      theme={theme}
+    >
       <Provider store={store}>
         <AppContainer />
       </Provider>

@@ -1,15 +1,14 @@
 import React, {
   useState,
   useCallback,
-  useEffect
+  useEffect,
+  FC
 } from 'react';
-import PropTypes from 'prop-types';
 import './css/registerUpload.scss';
-import classNames from 'classnames';
-import JFiledItem from 'src/componets/form/JFiledItem/JFiledItem.jsx';
-import JInput from 'src/componets/form/JInput/JInput.jsx';
-import cosService from 'src/service/coc/cosService';
-import JSelect from 'src/componets/form/JSelect/JSelect.jsx';
+import JFiledItem from 'src/componets/form/JFiledItem/JFiledItem';
+import JInput from 'src/componets/form/JInput/JInput';
+import cocService from 'src/service/coc/cocService';
+import JSelect from 'src/componets/form/JSelect/JSelect';
 import JUpload from 'src/componets/common/JUpload/JUpload';
 import {
   toast
@@ -19,22 +18,30 @@ import cnLocale from 'date-fns/locale/zh-CN';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  DatePicker,
+  DatePicker
 } from '@material-ui/pickers';
 import {
   Checkbox
 } from '@material-ui/core';
 import {
   warningToast
-} from 'src/lib/util/index.jsx';
+} from 'src/lib/util';
 import JValidate from '../../lib/jValidate/JValidate';
 import JButton from '../common/button/JButton';
 // 营业执照验证对象
-let vdt = null;
+let vdt: JValidate;
 // 联系人验证对象
-let userVdt = null;
+let userVdt: JValidate;
 
-function RegisterUpload(props) {
+interface IRegisterUpload {
+  // 步骤
+  step: number
+  password: string
+  phone: string
+  setStep: { (...args: any[]): any }
+}
+
+const RegisterUpload: FC<IRegisterUpload> = function (props: IRegisterUpload) {
   // 合作意向表单
   const [formData, setFormData] = useState({
     // 公司名称
@@ -62,7 +69,7 @@ function RegisterUpload(props) {
     // 经营范围
     businessScope: '',
     // 上传的图片地址
-    businessLicenseUrl: '',
+    businessLicenseUrl: ''
   });
   // 结束时间是否禁用
   const [datePickerOperateEndDateDisabled, setDatePickerOperateEndDateDisabled] = useState(false);
@@ -89,10 +96,10 @@ function RegisterUpload(props) {
     // 详细地址
     specificAddress: '',
     // 期望和问题
-    question: '',
+    question: ''
   });
   // 省数据
-  const [provinceOptions, setProvinceOptions] = useState([]);
+  const [provinceOptions, setProvinceOptions] = useState<any[]>([]);
   // 市数据
   const [cityOptions, setCityOptions] = useState([]);
   // 区数据
@@ -100,7 +107,9 @@ function RegisterUpload(props) {
   // 街道数据
   const [streetOptions, setStreetOptions] = useState([]);
   // 上传文件数据
-  const [uploadOption, setUploadOption] = useState({
+  const [uploadOption, setUploadOption] = useState<{
+    files: any[]
+  }>({
     files: []
   });
 
@@ -109,13 +118,16 @@ function RegisterUpload(props) {
      * 无依赖effect
      * */
     // 查询省的数据
-    cosService.getProvinceList().then(({ code, data }) => {
-      if (code === '1') {
-        setProvinceOptions(data.map((v) => ({
+    cocService.getProvinceList().then(({
+      code,
+      data
+    }) => {
+      if (code === '1' && data) {
+        setProvinceOptions(data.map((v: any) => ({
           // 省id
           key: v.laprovinceid,
           // 省名称
-          value: v.laprovince,
+          value: v.laprovince
         })));
       }
     });
@@ -151,34 +163,34 @@ function RegisterUpload(props) {
         },
         businessScope: {
           maxLength: 1000
-        },
+        }
       },
       messages: {
         companyName: {
-          maxLength: '公司名称长度不能超过50',
+          maxLength: '公司名称长度不能超过50'
         },
         taxCode: {
-          maxLength: '统一社会信用代码长度不能超过50',
+          maxLength: '统一社会信用代码长度不能超过50'
         },
         taxCodeDesc: {
-          maxLength: '组织机构代码长度不能超过50',
+          maxLength: '组织机构代码长度不能超过50'
         },
         companyType: {
-          maxLength: '公司类型长度不能超过50',
+          maxLength: '公司类型长度不能超过50'
         },
         registeredCapital: {
-          maxLength: '注册资本长度不能超过20',
+          maxLength: '注册资本长度不能超过20'
         },
         legalPerson: {
-          maxLength: '法定代表人长度不能超过20',
+          maxLength: '法定代表人长度不能超过20'
         },
         companyAddress: {
-          maxLength: '营业执照地址长度不能超过1000',
+          maxLength: '营业执照地址长度不能超过1000'
         },
         businessScope: {
-          maxLength: '经营范围长度不能超过1000',
-        },
-      },
+          maxLength: '经营范围长度不能超过1000'
+        }
+      }
     });
   }, [formData]);
 
@@ -196,28 +208,28 @@ function RegisterUpload(props) {
         },
         // 省
         addressProvince: {
-          required: true,
+          required: true
         },
         // 市
         addressCity: {
-          required: true,
+          required: true
         },
         // 区
         addressArea: {
-          required: true,
+          required: true
         },
         // 街道
         addressTown: {
-          required: true,
+          required: true
         },
         // 详细地址
         specificAddress: {
           required: true,
-          maxLength: 100,
+          maxLength: 100
         },
         // 问题和期望
         question: {
-          maxLength: 60,
+          maxLength: 60
         }
       },
       messages: {
@@ -228,19 +240,19 @@ function RegisterUpload(props) {
         },
         // 省
         addressProvince: {
-          required: '店铺地址的省不能为空',
+          required: '店铺地址的省不能为空'
         },
         // 市
         addressCity: {
-          required: '店铺地址市不能为空',
+          required: '店铺地址市不能为空'
         },
         // 区
         addressArea: {
-          required: '店铺地址的区不能为空',
+          required: '店铺地址的区不能为空'
         },
         // 街道
         addressTown: {
-          required: '店铺地址的街道不能为空',
+          required: '店铺地址的街道不能为空'
         },
         // 详细地址
         specificAddress: {
@@ -251,11 +263,15 @@ function RegisterUpload(props) {
         question: {
           maxLength: '最大长度为60'
         }
-      },
+      }
     });
   }, [userFormData]);
 
-  const formValChange = useCallback(({ name, value, target }) => {
+  const formValChange = useCallback(({
+    name,
+    value,
+    target
+  }) => {
     /**
      *  值改变方法，组件受控方法
      * */
@@ -274,7 +290,9 @@ function RegisterUpload(props) {
     });
   }, [formData]);
 
-  const userFormValChange = useCallback(({ name, value, target }) => {
+  const userFormValChange = useCallback(({
+    name, value, target
+  }) => {
     /**
      *  值改变方法，组件受控方法
      * */
@@ -305,7 +323,9 @@ function RegisterUpload(props) {
     setDatePickerOperateEndDateDisabled(value);
   }, [formData]);
 
-  const provinceChange = useCallback(async ({ name, value, text }) => {
+  const provinceChange = useCallback(async ({
+    name, value, text
+  }) => {
     /**
      * 省 select change
      * */
@@ -325,7 +345,7 @@ function RegisterUpload(props) {
       // 重置选中的街道乡镇编码
       addressTown: '',
       // 重置选中的街道乡镇名称
-      addressTownName: '',
+      addressTownName: ''
     });
     // 重置市option
     setCityOptions([]);
@@ -334,18 +354,22 @@ function RegisterUpload(props) {
     // 重置街道option
     setStreetOptions([]);
     // 查询市数据
-    const { code, data } = await cosService.getCityList(value);
-    if (code === '1') {
-      setCityOptions(data.map((v) => ({
+    const {
+      code, data
+    } = await cocService.getCityList(value);
+    if (code === '1' && data) {
+      setCityOptions(data.map((v: any) => ({
         // 市id
         key: v.lacityid,
         // 市名称
-        value: v.lacity,
+        value: v.lacity
       })));
     }
   }, [userFormData]);
 
-  const cityChange = useCallback(async ({ name, value, text }) => {
+  const cityChange = useCallback(async ({
+    name, value, text
+  }) => {
     /**
      * 市 select change
      * */
@@ -361,25 +385,29 @@ function RegisterUpload(props) {
       // 重置选中的街道乡镇编码
       addressTown: '',
       // 重置选中的街道乡镇名称
-      addressTownName: '',
+      addressTownName: ''
     });
     // 重置区option
     setCountryOptions([]);
     // 重置街道option
     setStreetOptions([]);
     // 查询区数据
-    const { code, data } = await cosService.getCountyList(value);
-    if (code === '1') {
-      setCountryOptions(data.map((v) => ({
+    const {
+      code, data
+    } = await cocService.getCountyList(value);
+    if (code === '1' && data) {
+      setCountryOptions(data.map((v: any) => ({
         // 区id
         key: v.lacountyid,
         // 市区名称
-        value: v.lacounty,
+        value: v.lacounty
       })));
     }
   }, [userFormData]);
 
-  const countryChange = useCallback(async ({ name, value, text }) => {
+  const countryChange = useCallback(async ({
+    name, value, text
+  }) => {
     /**
      * 区 select change
      * */
@@ -391,23 +419,27 @@ function RegisterUpload(props) {
       // 重置选中的街道乡镇编码
       addressTown: '',
       // 重置选中的街道乡镇名称
-      addressTownName: '',
+      addressTownName: ''
     });
     // 重置街道option
     setStreetOptions([]);
     // 查询街道数据
-    const { code, data } = await cosService.getStreetList(value);
-    if (code === '1') {
-      setStreetOptions(data.map((v) => ({
+    const {
+      code, data
+    } = await cocService.getStreetList(value);
+    if (code === '1' && data) {
+      setStreetOptions(data.map((v: any) => ({
         // 街道id
         key: v.latownid,
         // 街道名称
-        value: v.latown,
+        value: v.latown
       })));
     }
   }, [userFormData]);
 
-  const streetChange = useCallback(async ({ name, value, text }) => {
+  const streetChange = useCallback(async ({
+    name, value, text
+  }) => {
     /**
      * 街道 select change
      * */
@@ -425,7 +457,7 @@ function RegisterUpload(props) {
      * */
     if (error) {
       const {
-        main,
+        main
       } = error;
       if (main === 'File is too large') {
         toast.error('只能上传10M以内图片', {
@@ -435,13 +467,13 @@ function RegisterUpload(props) {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined,
+          progress: undefined
         });
       }
     }
   }, []);
 
-  const imgLoad = useCallback((str) => {
+  const imgLoad = useCallback((str: any): number => {
     /**
      * 上传完成
      * */
@@ -479,6 +511,8 @@ function RegisterUpload(props) {
         warningToast(msg);
       }
     }
+    // 兼容
+    return 1;
   }, [formData]);
 
   const toRegister = useCallback(() => {
@@ -497,7 +531,7 @@ function RegisterUpload(props) {
       return Promise.resolve(false);
     }
 
-    return cosService.saveCustomerPotential({
+    return cocService.saveCustomerPotential({
       // 联系人姓名
       userName: userFormData.userName,
       // 区code
@@ -533,11 +567,11 @@ function RegisterUpload(props) {
       // 法定代表人
       legalPerson: formData.legalPerson,
       // 经营结束日期
-      operateEndDate: formData.operatePeriodForeverFlag ? '' : formData.operateEndDate,
+      operateEndDate: formData.operatePeriodForeverFlag ? '' : (formData.operateEndDate || undefined),
       // 是否长期经营
       operatePeriodForeverFlag: formData.operatePeriodForeverFlag ? '1' : '0',
       // 经营开始日期
-      operateStartDate: formData.operateStartDate,
+      operateStartDate: formData.operateStartDate || undefined,
       // 注册资本
       registeredCapital: formData.registeredCapital,
       // 统一社会信用代码
@@ -547,7 +581,7 @@ function RegisterUpload(props) {
       // 密码
       password: props.password,
       // 注册电话号码
-      phone: props.phone,
+      phone: props.phone
     }).then(({ code }) => {
       return code === '1';
     });
@@ -588,7 +622,7 @@ function RegisterUpload(props) {
                 process: {
                   url: '/new/api/coc/api/cocCustomerPotentialCustomers/info',
                   withCredentials: false,
-                  onload: imgLoad,
+                  onload: imgLoad
                 }
               }}
               name="file"
@@ -883,14 +917,6 @@ function RegisterUpload(props) {
       </div>
     </MuiPickersUtilsProvider>
   );
-}
-
-RegisterUpload.propTypes = {
-  // 步骤
-  step: PropTypes.number,
-  password: PropTypes.string,
-  phone: PropTypes.string,
-  setStep: PropTypes.func
 };
 
 RegisterUpload.defaultProps = {};

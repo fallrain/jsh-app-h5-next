@@ -1,18 +1,28 @@
 import React, {
   useCallback
 } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './jButton.scss';
 
-function JButton(props) {
+interface IJButton {
+  // 按钮文字
+  text?: string,
+  // 按钮类型
+  type?: string,
+  // 按钮样式类
+  className?: string
+  // 点击事件
+  onClick?: { (...args: any[]): any }
+}
+
+function JButton(props:IJButton) {
   /* 公共按钮 */
   const {
     onClick
   } = props;
   const handleClick = useCallback(() => {
     /* 本按钮点击事件 */
-    props.onClick();
+    onClick && onClick();
   }, [onClick]);
 
   return (
@@ -20,7 +30,7 @@ function JButton(props) {
       type="button"
       className={classNames([
         'jButton',
-        props.type,
+        props.type || 'default',
         props.className
       ])}
       onClick={handleClick}
@@ -29,18 +39,4 @@ function JButton(props) {
   );
 }
 
-JButton.propTypes = {
-  // 按钮文字
-  text: PropTypes.string,
-  // 按钮类型
-  type: PropTypes.string,
-  // 按钮样式类
-  className: PropTypes.string,
-};
-JButton.defaultProps = {
-  // 按钮文字
-  text: '',
-  type: 'default',
-  className: '',
-};
 export default JButton;
