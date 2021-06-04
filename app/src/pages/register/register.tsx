@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 
 import './register.scss';
-import cocService from 'src/service/coc/cocService';
+import cocService from 'src/service/coc/coc.service';
 import JValidate from 'src/lib/jValidate/JValidate';
 import RegisterStep from 'src/componets/register/RegisterStep';
 import registerHead from 'src/assets/img/register/registerHead.png';
