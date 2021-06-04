@@ -10,10 +10,10 @@ import cocService from 'src/service/coc/coc.service';
 import JValidate from 'src/lib/jValidate/JValidate';
 import RegisterStep from 'src/componets/register/RegisterStep';
 import registerHead from 'src/assets/img/register/registerHead.png';
-import JSendCodeBtn from 'src/componets/common/JSendCodeBtn/JSendCodeBtn';
 import JInput from 'src/componets/form/JInput/JInput';
 import JButton from 'src/componets/common/button/JButton';
 import RegisterUpload from 'src/componets/register/RegisterUpload';
+import JSendCodeBtn from 'src/componets/common/JSendCodeBtn/JSendCodeBtn';
 import {
   errorToast
 } from 'src/lib/util';
