@@ -6,7 +6,7 @@ import {
 import RouterPage from 'src/router';
 // toast css
 import 'react-toastify/dist/ReactToastify.css';
-import JLoading from 'src/componets/common/jLoading/JLoading';
+import JLoading from 'src/componets/common/JLoading/JLoading';
 import { connect } from 'react-redux';
 
 interface IApp {

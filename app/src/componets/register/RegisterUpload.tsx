@@ -9,7 +9,7 @@ import JFiledItem from 'src/componets/form/JFiledItem/JFiledItem';
 import JInput from 'src/componets/form/JInput/JInput';
 import cocService from 'src/service/coc/coc.service';
 import JSelect from 'src/componets/form/JSelect/JSelect';
-import JUpload from 'src/componets/common/jUpload/JUpload';
+import JUpload from 'src/componets/common/JUpload/JUpload';
 import {
   toast
 } from 'react-toastify';

@@ -19,7 +19,7 @@ const routers: IRouterMap[] = [
   {
     name: 'Register',
     path: '/register',
-    component: () => import(/* webpackChunkName: "Register" */ 'src/pages/register/Register')
+    component: () => import(/* webpackChunkName: "Register" */ 'src/pages/register/register')
   },
   // 购物车页面
   {
