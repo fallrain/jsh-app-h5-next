@@ -510,13 +510,35 @@ module.exports = function (webpackEnv) {
                     : isEnvDevelopment,
                 },
                 'sass-loader'
-              ),
+              ).concat({
+                loader: 'sass-resources-loader',
+                options: {
+                  // resources:  [path.resolve(__dirname, '../src/assets/css/var.scss')]
+                  resources:  ['src/assets/css/var.scss']
+                }
+              }),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
               // Remove this when webpack adds a warning or an error for this.
               // See https://github.com/webpack/webpack/issues/6571
               sideEffects: true,
             },
+            // {
+            //   test: sassRegex,
+            //   exclude: sassModuleRegex,
+            //   use: {
+            //     loader: require.resolve('sass-resources-loader'),
+            //     options: {
+            //       resources:  [path.resolve(__dirname, '../src/assets/css/var.scss')]
+            //
+            //     }
+            //   },
+            //   // Don't consider CSS imports dead code even if the
+            //   // containing package claims to have no side effects.
+            //   // Remove this when webpack adds a warning or an error for this.
+            //   // See https://github.com/webpack/webpack/issues/6571
+            //   sideEffects: true,
+            // },
             // Adds support for CSS Modules, but using SASS
             // using the extension .module.scss or .module.sass
             {

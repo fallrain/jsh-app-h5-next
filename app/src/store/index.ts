@@ -1,8 +1,10 @@
 import {
   createStore,
   applyMiddleware,
-  compose
+  compose,
+  Middleware
 } from 'redux';
+import thunk from 'redux-thunk';
 import reducers from './redusers';
 
 declare global {
@@ -18,7 +20,9 @@ const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_E
     // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
   }) : compose;
 
-const middleWares: any[] = [];
+const middleWares: Middleware[] = [
+  thunk
+];
 const enhancer = composeEnhancers(
   applyMiddleware(...middleWares)
   // other store enhancers if any

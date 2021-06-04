@@ -1,7 +1,11 @@
+import {
+  IUrls
+} from './util.module';
+
 const util = {
-  addPrefix(baseURL:string, urls:Record<string, string> | Record<string, {(...args:any[]):string}>) {
+  addPrefix(baseURL: string, urls: IUrls) {
     Object.entries(urls).forEach(([key, value]) => {
-      if (toString.call(value) === '[object Function]') {
+      if (typeof value === 'function') {
         urls[key] = function (...args) {
           return baseURL + value(...args);
         };

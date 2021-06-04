@@ -7,11 +7,7 @@ import {
   toast
 } from 'react-toastify';
 
-const {
-  dispatch
-} = store;
-
-export interface Result {
+export interface IResult {
   code: string
   data?: Record<string, any> | Array<Record<string, any>> | Array<any>
   msg?: any
@@ -31,6 +27,9 @@ ax.defaults = Object.assign(
 const loadingAy = [];
 
 function closeLoading() {
+  const {
+    dispatch
+  } = store;
   // 关闭遮罩
   if (loadingAy.length === 1) {
     dispatch({
@@ -42,6 +41,9 @@ function closeLoading() {
 
 function showLoading() {
   /* 打开遮罩 */
+  const {
+    dispatch
+  } = store;
   dispatch({
     type: 'showLoading'
   });
@@ -81,7 +83,7 @@ ax.interceptors.request.use((config) => {
     config.params = {};
   }
   if (config.headers && !config.params.noToken) {
-    config.headers.Authorization = `Bearer  ${localStorage.getItem('acces_token')}`;
+    config.headers.Authorization = `Bearer  ${localStorage.getItem('token')}`;
   }
   if (!config.params.noLoading) {
     loadingAy.push(showLoading());
@@ -93,7 +95,7 @@ ax.interceptors.request.use((config) => {
   }
   showError(error);
   return {
-    code: -1
+    code: '-1'
   };
 });
 
@@ -127,16 +129,16 @@ ax.interceptors.response.use((response) => {
   showError(error);
   return {
     data: {
-      code: -1
+      code: '-1'
     }
   };
 });
 
-const axGet = function (
+const jGet = function (
   url: string,
-  params?: Record<string, any>,
+  params?: Record<string, any> | null,
   options?: Record<string, any>
-): Promise<Result> {
+): Promise<IResult> {
   return ax({
     headers: { 'content-type': 'application/x-www-form-urlencoded,charset=UTF-8' },
     method: 'get',
@@ -146,12 +148,12 @@ const axGet = function (
   }).then((res) => res.data);
 };
 
-const axPost = function (
+const jPost = function (
   url: string,
   data?: Record<string, any>,
   params?: Record<string, any>,
   options?: Record<string, any>
-): Promise<Result> {
+): Promise<IResult> {
   return ax({
     method: 'post',
     url,
@@ -161,12 +163,12 @@ const axPost = function (
   }).then((res) => res.data);
 };
 
-const axPostJson = function (
+const jPostJson = function (
   url: string,
   data?: Record<string, any>,
   params?: Record<string, any>,
   options?: Record<string, any>
-): Promise<Result> {
+): Promise<IResult> {
   return ax({
     method: 'post',
     url,
@@ -178,7 +180,7 @@ const axPostJson = function (
 export default ax;
 
 export {
-  axGet,
-  axPost,
-  axPostJson
+  jGet,
+  jPost,
+  jPostJson
 };

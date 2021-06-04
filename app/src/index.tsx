@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import {
-  connect, Provider
+  Provider,
 } from 'react-redux';
 import {
   createMuiTheme, ThemeProvider
@@ -28,11 +28,7 @@ const theme = createMuiTheme(
   },
   zhCN
 );
-const mapStateToProps = (state: any) => ({
-  app: state.app,
-});
 
-const AppContainer = connect(mapStateToProps)(App);
 ReactDOM.render(
   // <React.StrictMode>
   <BrowserRouter
@@ -43,7 +39,7 @@ ReactDOM.render(
       theme={theme}
     >
       <Provider store={store}>
-        <AppContainer />
+        <App />
       </Provider>
     </ThemeProvider>
   </BrowserRouter>,

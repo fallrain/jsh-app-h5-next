@@ -1,38 +1,38 @@
 import {
-  axGet,
-  axPostJson
-} from '../../lib/ajax';
-import urls from './cocUrl';
+  jGet,
+  jPostJson
+} from '../../lib/request';
+import urls from './coc.url';
 import {
   ISendCode,
   ICheckVerifyCode,
   ICustomerPotential
-} from './cocModule';
+} from './coc.module';
 
 export default {
   sendVerifyCode(data:ISendCode) {
     /**
      *  发送验证码
      *  */
-    return axGet(urls.sendVerifyCode, data);
+    return jGet(urls.sendVerifyCode, data);
   },
   checkVerifyCode(data:ICheckVerifyCode) {
     /**
      *  检查验证码
      *  */
-    return axGet(urls.checkVerifyCode, data);
+    return jGet(urls.checkVerifyCode, data);
   },
   getProvinceList() {
     /**
      *  获取省数据
      *  */
-    return axGet(urls.provinceList);
+    return jGet(urls.provinceList);
   },
   getCityList(id:string) {
     /**
      *  获取市数据
      *  */
-    return axGet(urls.cityList, {
+    return jGet(urls.cityList, {
       // 省id
       laprovinceid: id
     });
@@ -41,7 +41,7 @@ export default {
     /**
      *  获取区数据
      *  */
-    return axGet(urls.countyList, {
+    return jGet(urls.countyList, {
       // 市id
       lacityid: id
     });
@@ -50,7 +50,7 @@ export default {
     /**
      *  获取街道数据
      *  */
-    return axGet(urls.streetList, {
+    return jGet(urls.streetList, {
       // 区id
       lacountyid: id
     });
@@ -59,7 +59,7 @@ export default {
     /**
      *  注册
      *  */
-    return axPostJson(
+    return jPostJson(
       urls.saveCustomerPotential,
       data,
       undefined,

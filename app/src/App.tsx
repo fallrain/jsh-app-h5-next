@@ -6,11 +6,17 @@ import {
 import RouterPage from 'src/router';
 // toast css
 import 'react-toastify/dist/ReactToastify.css';
-import JLoading from 'src/componets/common/JLoading/JLoading';
+import JLoading from 'src/componets/common/jLoading/JLoading';
+import { connect } from 'react-redux';
 
 interface IApp {
   app: any
 }
+
+const mapStateToProps = (state: any) => ({
+  app: state.app,
+  userInf: state.userInf
+});
 
 function App(props: IApp) {
   return (
@@ -24,4 +30,4 @@ function App(props: IApp) {
   );
 }
 
-export default App;
+export default connect(mapStateToProps)(App);

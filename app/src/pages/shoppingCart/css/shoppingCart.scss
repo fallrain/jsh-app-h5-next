@@ -1,0 +1,126 @@
+.shoppingCart {
+  min-height: 100vh;
+  background: #F5F5F5;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 124px;
+}
+
+.shoppingCart-tab-picker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  color: $theme-color;
+  padding-left: 10px;
+
+  .iconfont {
+    font-size: 20px;
+  }
+}
+
+.shoppingCart-tab-picker-wrap{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.shoppingCart-ads {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  padding-left: 16px;
+  padding-right: 16px;
+  color: #666;
+  font-size: 24px;
+}
+
+.shoppingCart-ads-detail {
+  width: 470px;
+  height: 34px;
+  font-size: 24px;
+  color: $theme-color;
+  line-height: 34px;
+  vertical-align: top;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  .iconfont {
+    display: inline-block;
+    font-size: 34px;
+    margin-right: 12px;
+    vertical-align: bottom;
+  }
+}
+
+.shoppingCart-ads-total {
+  flex-shrink: 0;
+  margin-right: 10px;
+  max-width: 600px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shoppingCart-list {
+
+}
+
+.shoppingCart-list-filter{
+
+}
+
+.shoppingCart-list-filter-text{
+  color: $theme-color;
+  font-size: 26px;
+  margin-bottom: 20px;
+  border-left: 6px solid $theme-color;
+  padding-left: 20px;
+  margin-left: 16px;
+  background: #fff;
+  height: 50px;
+  line-height: 50px;
+  font-weight: 600;
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+.shoppingCart-tab-wrap{
+  position: sticky;
+  // top: var(--window-top);
+  top: 0;
+  z-index: 99;
+  background: #F5F5F5;
+}
+
+.shoppingCart-empty{
+  margin: 40px auto;
+  color: #333;
+  font-size: 24px;
+  text-align: center;
+}
+
+.shoppingCart-protocol{
+  max-height: 720px;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+.shoppingCart-protocol-strong{
+  font-size: 26px;
+  font-weight: 600;
+  color: #333;
+}
+
+.shoppingCart-protocol-text{
+
+}
+
+.shoppingCart-protocol-cnt{
+  font-size: 24px;
+  color: #666;
+}

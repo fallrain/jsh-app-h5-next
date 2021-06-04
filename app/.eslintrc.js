@@ -42,7 +42,7 @@ module.exports = {
     'max-len': [
       'error',
       {
-        code: 120,
+        code: 150,
         tabWidth: 2
       }
     ], // 最大行
@@ -110,6 +110,8 @@ module.exports = {
       2,
       { extensions: ['.js', '.jsx', 'tsx'], },
     ],
-    'react/static-property-placement': 0
+    'react/static-property-placement': 0,
+    // 原形的方法是可以使用的
+    'no-prototype-builtins': 0
   },
 };

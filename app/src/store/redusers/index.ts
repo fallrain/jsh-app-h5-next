@@ -1,8 +1,10 @@
 import {
   combineReducers
 } from 'redux';
-import appContent from './appContent.reducer';
+import app from './app.reducer';
+import user from '../user/user.reduser';
 
 export default combineReducers({
-  app: appContent
+  app,
+  user,
 });

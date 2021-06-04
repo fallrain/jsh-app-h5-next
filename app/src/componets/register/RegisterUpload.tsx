@@ -7,9 +7,9 @@ import React, {
 import './css/registerUpload.scss';
 import JFiledItem from 'src/componets/form/JFiledItem/JFiledItem';
 import JInput from 'src/componets/form/JInput/JInput';
-import cocService from 'src/service/coc/cocService';
+import cocService from 'src/service/coc/coc.service';
 import JSelect from 'src/componets/form/JSelect/JSelect';
-import JUpload from 'src/componets/common/JUpload/JUpload';
+import JUpload from 'src/componets/common/jUpload/JUpload';
 import {
   toast
 } from 'react-toastify';
@@ -41,7 +41,7 @@ interface IRegisterUpload {
   setStep: { (...args: any[]): any }
 }
 
-const RegisterUpload: FC<IRegisterUpload> = function (props: IRegisterUpload) {
+const RegisterUpload: FC<IRegisterUpload> = function (props) {
   // 合作意向表单
   const [formData, setFormData] = useState({
     // 公司名称

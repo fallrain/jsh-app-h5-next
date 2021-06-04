@@ -1,0 +1,22 @@
+.jSendCodeBtn-send-code {
+  display: inline-block;
+  height: 60px;
+  min-width: 172px;
+  background: #409eff;
+  color: #fff;
+  font-size: 24px;
+  border-radius: 8px;
+  padding-left: 17px;
+  padding-right: 17px;
+
+  &.disabled {
+    background: #999;
+    color: #fff;
+    font-size: 24px;
+  }
+
+  &.type2 {
+    color: #409eff;
+    background: transparent;
+  }
+}

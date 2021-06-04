@@ -1,0 +1,137 @@
+.jAddressPicker {
+  background: #fff;
+}
+
+.jAddressPicker-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 40px;
+}
+
+.jAddressPicker-head-title {
+  font-size: 30px;
+  color: #333;
+  line-height: 42px;
+  font-weight: 600;
+}
+
+.jAddressPicker-head-close {
+  font-size: 28px;
+  color: $theme-color;
+}
+
+.jAddressPicker-cnt {
+  padding-left: 24px;
+  min-height: 684px;
+  max-height: 900px;
+  overflow-y: auto;
+}
+
+.jAddressPicker-cnt-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 96px;
+  border-bottom: 1px solid #F0F0F0;
+  color: #666;
+  font-size: 28px;
+
+  &.active {
+    .jAddressPicker-cnt-item-check {
+      color: $theme-color;
+    }
+
+    .jAddressPicker-cnt-item-text {
+      color: $theme-color;
+    }
+  }
+}
+
+.jAddressPicker-cnt-item-head {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 96px;
+  line-height: 96px;
+  padding-left: 82px;
+  padding-right: 40px;
+}
+
+.jAddressPicker-cnt-item-head-icon {
+  color: #999;
+  font-size: 24px;
+
+  &.active {
+    transform: rotateX(180deg);
+  }
+}
+
+.jAddressPicker-cnt-item-check {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 22px;
+  font-size: 36px;
+}
+
+.jAddressPicker-cnt-detail {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 82px;
+  padding-right: 26px;
+}
+
+.jAddressPicker-cnt-detail-item-wrap{
+  width: 100%;
+}
+
+.jAddressPicker-cnt-detail-item {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 12px 42px 14px 36px;
+  background: #F7F7F8;
+  line-height: 40px;
+  color: #333;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  border: 1px solid #F7F7F8;
+
+  &.active {
+    border: 1px solid $theme-color;
+    color: $theme-color;
+    background: #FFF5F7;
+  }
+
+  &.short {
+    width: auto;
+    max-width: 100%;
+    margin-right: 10px;
+
+    .jAddressPicker-cnt-detail-item-inf {
+      width: 100%;
+      -webkit-line-clamp: 1;
+    }
+  }
+}
+
+.jAddressPicker-cnt-detail-item-inf {
+  display: -webkit-box;
+  max-height: 162px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jAddressPicker-search-wrap{
+  width: 100%;
+  margin-top: 24px;
+  margin-bottom: 30px;
+  padding-left: 82px;
+  padding-right: 40px;
+}
