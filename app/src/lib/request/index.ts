@@ -7,9 +7,12 @@ import {
   toast
 } from 'react-toastify';
 
-export interface IResult {
+// 默认返回data类型
+type IDefaultResultData = Record<string, any> | Array<Record<string, any>> | Array<any>;
+
+export interface IResult<T extends IDefaultResultData> {
   code: string
-  data?: Record<string, any> | Array<Record<string, any>> | Array<any>
+  data?: T
   msg?: any
   response?: AxiosResponse
 }
@@ -134,11 +137,11 @@ ax.interceptors.response.use((response) => {
   };
 });
 
-const jGet = function (
+const jGet = function <T = IDefaultResultData> (
   url: string,
   params?: Record<string, any> | null,
   options?: Record<string, any>
-): Promise<IResult> {
+): Promise<IResult<T>> {
   return ax({
     headers: { 'content-type': 'application/x-www-form-urlencoded,charset=UTF-8' },
     method: 'get',
@@ -148,12 +151,12 @@ const jGet = function (
   }).then((res) => res.data);
 };
 
-const jPost = function (
+const jPost = function <T = IDefaultResultData> (
   url: string,
   data?: Record<string, any>,
   params?: Record<string, any>,
   options?: Record<string, any>
-): Promise<IResult> {
+): Promise<IResult<T>> {
   return ax({
     method: 'post',
     url,
@@ -163,12 +166,12 @@ const jPost = function (
   }).then((res) => res.data);
 };
 
-const jPostJson = function (
+const jPostJson = function<T = IDefaultResultData> (
   url: string,
   data?: Record<string, any>,
   params?: Record<string, any>,
   options?: Record<string, any>
-): Promise<IResult> {
+): Promise<IResult<T>> {
   return ax({
     method: 'post',
     url,

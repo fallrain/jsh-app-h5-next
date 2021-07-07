@@ -1,5 +1,6 @@
 const prefix = 'activity';
-export default {
+const ACTIVITY = {
   UPDATE_ACTIVITY: `${prefix}.updateActivity`,
   GET_ACTIVITY: `${prefix}.getActivity`
 };
+export default ACTIVITY;

@@ -38,7 +38,7 @@ interface IRegisterUpload {
   step: number
   password: string
   phone: string
-  setStep: { (...args: any[]): any }
+  setStep: (...args: any[])=> any
 }
 
 const RegisterUpload: FC<IRegisterUpload> = function (props) {

@@ -64,6 +64,8 @@ interface IJShoppingCartItemProps {
   updateTotal: AnyFun,
   // 删除版本
   choseOtherVersionsDel: AnyFun,
+  // 选择其他版本
+  choseOtherVersionsChange: AnyFun,
 }
 
 const JShoppingCartItem: FC<IJShoppingCartItemProps> = ({

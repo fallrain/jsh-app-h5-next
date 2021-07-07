@@ -1,5 +1,5 @@
 const prefix = 'businessmanagement';
-export default {
+const BUSINESSMANAGEMEN = {
   UPDATE_ADDSTORE_DETAIL: `${prefix}.updateAddstoreDetail`,
   GET_ADDSTORE_DETAIL: `${prefix}.getAddstoreDetail`,
   UPDATE_ACCOUNTBILL_DETAIL: `${prefix}.updateAccountBillDetail`,
@@ -7,3 +7,4 @@ export default {
   UPDATE_ACCOUNTBACK_DETAIL: `${prefix}.updateAccountBackDetail`,
   GET_ACCOUNTBACK_DETAIL: `${prefix}.getAccountBackDetail`
 };
+export default BUSINESSMANAGEMEN;

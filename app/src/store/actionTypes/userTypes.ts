@@ -1,5 +1,5 @@
 const prefix = 'user';
-export default {
+const USER = {
   // 获取用户信息
   GET_USER: `${prefix}.getUser`,
   // 更新用户信息
@@ -28,4 +28,15 @@ export default {
   UPDATE_PERMISSION: `${prefix}.updatePermission`,
   // 用户权限信息
   GET_PERMISSION_LIST: `${prefix}.getPermissionList`,
+  // 接口取角色信息
+  UPDATE_ROLE_ASYNC: `${prefix}.updateRoleAsync`,
+  //  更新角色信息
+  UPDATE_ROLE: `${prefix}.updateRole`,
+  // 用户角色信息
+  GET_ROLE: `${prefix}.getRole`,
+  // 更新用户冻结信息
+  UPDATE_UNFREEZE_STATE: `${prefix}.updateUnfreezeState`,
+  // 用户冻结信息
+  GET_UNFREEZE_STATE: `${prefix}.getUnfreezeState`,
 };
+export default USER;

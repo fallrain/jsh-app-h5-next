@@ -5,8 +5,10 @@ import React, {
 import { useDispatch } from 'react-redux';
 // import { USER } from '../../store/actionTypes';
 import { Link } from 'react-router-dom';
-import { func } from 'prop-types';
-import { getSaleInf } from '../../store/user/user.reduser';
+import {
+  getSaleInf,
+  getTokenUserInf
+} from '../../store/user/user.reduser';
 import routerMap from '../../router/routerData';
 // const mapDispatchToProps = (dispatch: Dispatch) => ({
 //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -17,8 +19,8 @@ import routerMap from '../../router/routerData';
 const HomePage: FC = function () {
   const dispatch = useDispatch();
   useEffect(() => {
-    // props[USER.UPDATE_SALE_ASYNC]();
     dispatch(getSaleInf);
+    dispatch(getTokenUserInf);
   }, []);
   return (
     <div>

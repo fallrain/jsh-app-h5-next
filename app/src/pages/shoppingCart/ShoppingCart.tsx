@@ -1,7 +1,9 @@
 import React, {
   FC,
   useState,
-  useCallback, useEffect, useMemo
+  useCallback,
+  useEffect,
+  useMemo,
 } from 'react';
 import './css/shoppingCart.scss';
 import classNames from 'classnames';
@@ -9,7 +11,13 @@ import {
   getIndustryGroup
 } from 'src/lib/dataDictionary';
 import JShoppingCartItem from 'src/componets/shoppingCart/JShoppingCartItem';
+import { useSelector } from 'react-redux';
+import {
+  produce
+} from 'immer';
 import JPopPicker from '../../componets/common/jPopPicker/JPopPicker';
+import userSelector from '../../store/user/user.selector';
+import { USER } from '../../store/actionTypes';
 
 const ShoppingCart: FC = function () {
   // 产业picker显示隐藏
@@ -27,7 +35,10 @@ const ShoppingCart: FC = function () {
   const [shoppingList, setShoppingList] = useState<Record<string, any>[]>([]);
   // 信用额度列表（以产品大类为维度）
   const [creditQuotaList, setDreditQuotaList] = useState<Record<string, any>[]>([]);
-
+  // 用户信息
+  const userInf = useSelector(userSelector[USER.GET_SALE]);
+  // 默认送达方
+  const defaultSendTo = useSelector(userSelector[USER.GET_DEFAULT_SEND_TO]);
   const showIndustryPicker = useCallback(() => {
     /**
      *  展示产业picker
@@ -81,6 +92,53 @@ const ShoppingCart: FC = function () {
     };
   }, [validList, choseIndustryOptions]);
 
+  const choseOtherVersionsChange = useCallback((checkedList, index) => {
+    /**
+     *  选择的版本change
+     *  */
+    const shoppingListTemp = [...shoppingList];
+    shoppingListTemp[index].choseOtherVersions = checkedList;
+    setShoppingList(shoppingListTemp);
+  }, [shoppingList]);
+  const choseOtherVersionsDel = useCallback((delIndex, index) => {
+    /**
+     *  选择的版本删除操作
+     *  */
+    const shoppingListTemp = [...shoppingList];
+    shoppingListTemp[index].choseOtherVersions.splice(delIndex, 1);
+    setShoppingList(shoppingListTemp);
+  }, [shoppingList]);
+
+  const changeObject = useCallback((data, map) => {
+    /**
+     *  根据字段改变数据
+     *  */
+    return produce(data, (draft:any) => {
+      /* 根据字段改变数据 */
+      Object.keys(map).forEach((key) => {
+        let keyObj = draft;
+        if (typeof key === 'string') {
+          const keyAy = key.split('.');
+          keyAy.forEach((v, index) => {
+            if (index !== keyAy.length - 1) {
+              keyObj = keyObj[v];
+            }
+          });
+          keyObj[keyAy[keyAy.length - 1]] = map[key];
+        } else {
+          draft[key] = map[key];
+        }
+      });
+    });
+  }, []);
+  const propertyChange = useCallback((val, index) => {
+    /**
+     *  单个属性改变
+     *  */
+    const shoppingListTemp = [...shoppingList];
+    shoppingListTemp[index] = changeObject(shoppingListTemp[index], val);
+    setShoppingList(shoppingListTemp);
+  }, [changeObject, shoppingList]);
   useEffect(() => {
     /**
      * 初始化操作
@@ -131,26 +189,27 @@ const ShoppingCart: FC = function () {
                 <div
                   key={goods.id}
                 >
-                  {/* 筛选出来的产业才显示 */}
-                  {/* <JShoppingCartItem */}
-                  {/*  creditQuotaList={creditQuotaList} */}
-                  {/*  defaultSendTo={defaultSendTo} */}
-                  {/*  goods={goods} */}
-                  {/*  index={index} */}
-                  {/*  userInf={userInf} */}
-                  {/*  versionPrice={versionPrice} */}
-                  {/*  warehouseFlag={choseSendAddress.yunCangFlag} */}
-                  {/*  followState={goods.followState} */}
-                  {/*  change={goodsChange} */}
-                  {/*  choseOtherVersionsChange={hoseOtherVersionsChange} */}
-                  {/*  numberChange={numberChange} */}
-                  {/*  choseOtherVersionsDel={choseOtherVersionsDel} */}
-                  {/*  propertyChange={propertyChange} */}
-                  {/*  updateTotal={updateTotal} */}
-                  {/*  del={singleDeleteCart} */}
-                  {/*  sign={toSign} */}
-                  {/*  updateNumber={refreshShoppingCartList} */}
-                  {/* /> */}
+                  // 筛选出来的产业才显示
+                  <JShoppingCartItem
+                    creditQuotaList={creditQuotaList}
+                    defaultSendTo={defaultSendTo}
+                    goods={goods}
+                    index={index}
+                    userInf={userInf}
+                    versionPrice={versionPrice}
+                    warehouseFlag={choseSendAddress.yunCangFlag}
+                    followState={goods.followState}
+                    // change={goodsChange}
+                    choseOtherVersionsChange={choseOtherVersionsChange}
+                    // numberChange={numberChange}
+                    // choseOtherVersionsDel={choseOtherVersionsDel}
+                    // propertyChange={propertyChange}
+                    // updateTotal={updateTotal}
+                    del={singleDeleteCart}
+                    sign={toSign}
+                    choseOtherVersionsDel={choseOtherVersionsDel}
+                    propertyChange={propertyChange}
+                  />
                 </div>
               )
             ))

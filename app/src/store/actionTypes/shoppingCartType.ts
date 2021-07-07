@@ -1,5 +1,5 @@
 const prefix = 'shoppingCart';
-export default {
+const SHOPPING_CART = {
   // 购物车数量
   GET_CART_NUM: `${prefix}.getCartNum`,
   UPDATE_CART_NUM: `${prefix}.updateCartNum`,
@@ -8,3 +8,5 @@ export default {
   GET_SPLIT_ORDER_DATA: `${prefix}.getSplitOrderData`,
   UPDATE_SPLIT_ORDER_DATA: `${prefix}.updateSplitOrderData`,
 };
+
+export default SHOPPING_CART;
