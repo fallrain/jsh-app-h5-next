@@ -277,7 +277,16 @@ const customerService = {
     return jGet(urls.resultRepaymentMessage(customerName, customerId, money, remarks));
   },
   // 信用还款记录
-  repaymentMessageList(custCode: any, custName: any, currentPage: any, repaydate: any, repaystate: any, pageNo: any, pageSize: any, recordcount: any) {
+  repaymentMessageList(
+    custCode: any,
+    custName: any,
+    currentPage: any,
+    repaydate: any,
+    repaystate: any,
+    pageNo: any,
+    pageSize: any,
+    recordcount: any
+  ) {
     /* 信用还款 */
     return jGet(urls.repaymentMessageList(custCode, custName, currentPage, repaydate, repaystate, pageNo, pageSize, recordcount));
   },

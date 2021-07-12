@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React, {
-  useState
+  useState,
+  useEffect,
 } from 'react';
 import {
   toast
@@ -35,7 +36,12 @@ function JSendCodeBtn(props: IJSendCodeBtn) {
    * */
   const [disabled, setDisabled] = useState<boolean>(false);
   const [btnText, setBtnText] = useState<string>(props.btnText || '发送验证码');
-
+  const [sendCodeInterval, setSendCodeInterval] = useState<number>();
+  useEffect(() => {
+    return () => {
+      clearInterval(sendCodeInterval);
+    };
+  }, [sendCodeInterval]);
   async function sendCode() {
     /* 发送验证码 */
     const {
@@ -94,7 +100,7 @@ function JSendCodeBtn(props: IJSendCodeBtn) {
     let trueTime = time || 60;
     setDisabled(true);
     setBtnText(`${trueTime}秒后可重发`);
-    const interval = setInterval(() => {
+    const interval = window.setInterval(() => {
       setBtnText(`${--trueTime}秒后可重发`);
       if (trueTime < 1) {
         setBtnText('获取验证码');
@@ -102,6 +108,7 @@ function JSendCodeBtn(props: IJSendCodeBtn) {
         clearInterval(interval);
       }
     }, 1000);
+    setSendCodeInterval(interval);
   }
 
   return (

@@ -190,26 +190,26 @@ const ShoppingCart: FC = function () {
                   key={goods.id}
                 >
                   // 筛选出来的产业才显示
-                  <JShoppingCartItem
-                    creditQuotaList={creditQuotaList}
-                    defaultSendTo={defaultSendTo}
-                    goods={goods}
-                    index={index}
-                    userInf={userInf}
-                    versionPrice={versionPrice}
-                    warehouseFlag={choseSendAddress.yunCangFlag}
-                    followState={goods.followState}
-                    // change={goodsChange}
-                    choseOtherVersionsChange={choseOtherVersionsChange}
-                    // numberChange={numberChange}
-                    // choseOtherVersionsDel={choseOtherVersionsDel}
-                    // propertyChange={propertyChange}
-                    // updateTotal={updateTotal}
-                    del={singleDeleteCart}
-                    sign={toSign}
-                    choseOtherVersionsDel={choseOtherVersionsDel}
-                    propertyChange={propertyChange}
-                  />
+                  {/* <JShoppingCartItem */}
+                  {/*  creditQuotaList={creditQuotaList} */}
+                  {/*  defaultSendTo={defaultSendTo} */}
+                  {/*  goods={goods} */}
+                  {/*  index={index} */}
+                  {/*  userInf={userInf} */}
+                  {/*  versionPrice={versionPrice} */}
+                  {/*  warehouseFlag={choseSendAddress.yunCangFlag} */}
+                  {/*  followState={goods.followState} */}
+                  {/*  // change={goodsChange} */}
+                  {/*  choseOtherVersionsChange={choseOtherVersionsChange} */}
+                  {/*  // numberChange={numberChange} */}
+                  {/*  // choseOtherVersionsDel={choseOtherVersionsDel} */}
+                  {/*  // propertyChange={propertyChange} */}
+                  {/*  // updateTotal={updateTotal} */}
+                  {/*  del={singleDeleteCart} */}
+                  {/*  sign={toSign} */}
+                  {/*  choseOtherVersionsDel={choseOtherVersionsDel} */}
+                  {/*  propertyChange={propertyChange} */}
+                  {/* /> */}
                 </div>
               )
             ))
